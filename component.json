@@ -1,0 +1,25 @@
+{
+  "name": "unist-util-is",
+  "version": "0.0.0",
+  "description": "Utility to check if a node passes a test",
+  "license": "MIT",
+  "keywords": [
+    "unist",
+    "mdast",
+    "markdown",
+    "retext",
+    "natural",
+    "language",
+    "node",
+    "is",
+    "equal",
+    "test",
+    "type",
+    "util",
+    "utility"
+  ],
+  "repository": "wooorm/unist-util-is",
+  "scripts": [
+    "index.js"
+  ]
+}

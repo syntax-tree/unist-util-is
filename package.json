@@ -1,0 +1,62 @@
+{
+  "name": "unist-util-is",
+  "version": "0.0.0",
+  "description": "Utility to check if a node passes a test",
+  "license": "MIT",
+  "keywords": [
+    "unist",
+    "mdast",
+    "markdown",
+    "retext",
+    "natural",
+    "language",
+    "node",
+    "is",
+    "equal",
+    "test",
+    "type",
+    "util",
+    "utility"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wooorm/unist-util-is.git"
+  },
+  "author": {
+    "name": "Titus Wormer",
+    "email": "tituswormer@gmail.com"
+  },
+  "files": [
+    "index.js",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "browserify": "^11.0.0",
+    "eslint": "^1.0.0",
+    "esmangle": "^1.0.0",
+    "istanbul": "^0.3.0",
+    "jscs": "^2.0.0",
+    "jscs-jsdoc": "^1.0.0",
+    "mdast": "^1.0.0",
+    "mdast-comment-config": "^1.0.0",
+    "mdast-github": "^1.0.0",
+    "mdast-lint": "^1.0.0",
+    "mdast-slug": "^1.0.0",
+    "mdast-validate-links": "^1.0.0",
+    "mocha": "^2.0.0"
+  },
+  "scripts": {
+    "test-api": "mocha --check-leaks test.js",
+    "test-coverage": "istanbul cover _mocha -- test.js",
+    "test-travis": "npm run test-coverage",
+    "test": "npm run test-api",
+    "lint-api": "eslint .",
+    "lint-style": "jscs --reporter inline .",
+    "lint": "npm run lint-api && npm run lint-style",
+    "make": "npm run lint && npm run test-coverage",
+    "bundle": "browserify index.js --no-builtins -s unistUtilIs > unist-util-is.js",
+    "postbundle": "esmangle unist-util-is.js > unist-util-is.min.js",
+    "build-md": "mdast . --quiet",
+    "build": "npm run bundle && npm run build-md"
+  }
+}
