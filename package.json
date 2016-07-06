@@ -18,45 +18,59 @@
     "util",
     "utility"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/wooorm/unist-util-is.git"
-  },
-  "author": {
-    "name": "Titus Wormer",
-    "email": "tituswormer@gmail.com"
-  },
   "files": [
-    "index.js",
-    "LICENSE"
+    "index.js"
+  ],
+  "repository": "https://github.com/wooorm/unist-util-is.git",
+  "bugs": "https://github.com/wooorm/hast-util-to-html/issues",
+  "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"
   ],
   "devDependencies": {
-    "browserify": "^11.0.0",
-    "eslint": "^1.0.0",
-    "esmangle": "^1.0.0",
-    "istanbul": "^0.3.0",
-    "jscs": "^2.0.0",
-    "jscs-jsdoc": "^1.0.0",
-    "mdast": "^1.0.0",
-    "mdast-comment-config": "^1.0.0",
-    "mdast-github": "^1.0.0",
-    "mdast-lint": "^1.0.0",
-    "mdast-slug": "^1.0.0",
-    "mdast-validate-links": "^1.0.0",
-    "mocha": "^2.0.0"
+    "browserify": "^13.0.1",
+    "esmangle": "^1.0.1",
+    "istanbul": "^0.4.0",
+    "remark-cli": "^1.0.0",
+    "remark-comment-config": "^4.0.0",
+    "remark-github": "^5.0.0",
+    "remark-lint": "^4.0.0",
+    "remark-validate-links": "^4.0.0",
+    "tape": "^4.0.0",
+    "xo": "^0.16.0"
   },
   "scripts": {
-    "test-api": "mocha --check-leaks test.js",
-    "test-coverage": "istanbul cover _mocha -- test.js",
-    "test-travis": "npm run test-coverage",
-    "test": "npm run test-api",
-    "lint-api": "eslint .",
-    "lint-style": "jscs --reporter inline .",
-    "lint": "npm run lint-api && npm run lint-style",
-    "make": "npm run lint && npm run test-coverage",
-    "bundle": "browserify index.js --no-builtins -s unistUtilIs > unist-util-is.js",
-    "postbundle": "esmangle unist-util-is.js > unist-util-is.min.js",
-    "build-md": "mdast . --quiet",
-    "build": "npm run bundle && npm run build-md"
+    "build-md": "remark . --quiet --frail",
+    "build-bundle": "browserify index.js --bare -s unistUtilIs > unist-util-is.js",
+    "build-mangle": "esmangle < unist-util-is.js > unist-util-is.min.js",
+    "build": "npm run build-md && npm run build-bundle && npm run build-mangle",
+    "lint": "xo",
+    "test-api": "node test",
+    "test-coverage": "istanbul cover test.js",
+    "test": "npm run build && npm run lint && npm run test-coverage"
+  },
+  "xo": {
+    "space": true,
+    "rules": {
+      "guard-for-in": [
+        0
+      ]
+    },
+    "ignores": [
+      "unist-util-is.js",
+      "unist-util-is.min.js"
+    ]
+  },
+  "remarkConfig": {
+    "output": true,
+    "plugins": [
+      "comment-config",
+      "github",
+      "lint",
+      "validate-links"
+    ],
+    "settings": {
+      "bullet": "*"
+    }
   }
 }

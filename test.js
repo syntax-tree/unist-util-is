@@ -8,129 +8,129 @@
 
 'use strict';
 
-/* eslint-env node, mocha */
+/* eslint-env node */
 
-/*
- * Dependencies.
- */
-
-var assert = require('assert');
+/* Dependencies. */
+var test = require('tape');
 var is = require('./');
 
-/*
- * Methods.
- */
+/* Tests. */
+test('unist-util-is', function (t) {
+  var node = {type: 'strong'};
+  var parent = {type: 'paragraph', children: []};
 
-var throws = assert.throws;
-var equal = assert.strictEqual;
+  t.throws(
+    function () {
+      is(false);
+    },
+    /Expected function, string, or object as test/,
+    'should throw when `test` is invalid'
+  );
 
-/*
- * Tests.
- */
+  t.throws(
+    function () {
+      is(null, node, -1, parent);
+    },
+    /Expected positive finite index or child node/,
+    'should throw when `index` is invalid (#1)'
+  );
 
-describe('unist-util-is', function () {
-    var node = {
-        'type': 'strong'
-    };
+  t.throws(
+    function () {
+      is(null, node, Infinity, parent);
+    },
+    /Expected positive finite index or child node/,
+    'should throw when `index` is invalid (#2)'
+  );
 
-    var parent = {
-        'type': 'paragraph',
-        'children': []
-    };
+  t.throws(
+    function () {
+      is(null, node, false, parent);
+    },
+    /Expected positive finite index or child node/,
+    'should throw when `index` is invalid (#3)'
+  );
 
-    it('should throw when `test` is invalid', function () {
-        throws(function () {
-            is(false);
-        }, /Expected function, string, or object as test/);
-    });
+  t.throws(
+    function () {
+      is(null, node, 0, {});
+    },
+    /Expected parent node/,
+    'should throw when `parent` is invalid (#1)'
+  );
 
-    it('should throw when `index` is invalid', function () {
-        throws(function () {
-            is(null, node, -1, parent);
-        }, /Expected positive finite index or child node/);
+  t.throws(
+    function () {
+      is(null, node, 0, {
+        type: 'paragraph'
+      });
+    },
+    /Expected parent node/,
+    'should throw when `parent` is invalid (#2)'
+  );
 
-        throws(function () {
-            is(null, node, Infinity, parent);
-        }, /Expected positive finite index or child node/);
+  t.throws(
+    function () {
+      is(null, node, 0);
+    },
+    /Expected both parent and index/,
+    'should throw `parent` xor `index` are given (#1)'
+  );
 
-        throws(function () {
-            is(null, node, false, parent);
-        }, /Expected positive finite index or child node/);
-    });
+  t.throws(
+    function () {
+      is(null, node, null, parent);
+    },
+    /Expected both parent and index/,
+    'should throw `parent` xor `index` are given (#2)'
+  );
 
-    it('should throw when `parent` is invalid', function () {
-        throws(function () {
-            is(null, node, 0, {});
-        }, /Expected parent node/);
+  t.throws(
+    function () {
+      is();
+    },
+    /Expected node/,
+    'should fail without node'
+  );
 
-        throws(function () {
-            is(null, node, 0, {
-                'type': 'paragraph'
-            });
-        }, /Expected parent node/);
-    });
+  t.equal(is(null, node), true, 'should return true without test');
 
-    it('should throw `parent` xor `index` are given', function () {
-        throws(function () {
-            is(null, node, 0);
-        }, /Expected both parent and index/);
+  t.equal(is('strong', node), true, 'should match types (#1)');
+  t.equal(is('emphasis', node), false, 'should match types (#2)');
 
-        throws(function () {
-            is(null, node, null, parent);
-        }, /Expected both parent and index/);
-    });
+  t.equal(is(node, node), true, 'should match partially (#1)');
+  t.equal(is({type: 'strong'}, node), true, 'should match partially (#2)');
+  t.equal(is({type: 'paragraph'}, parent), true, 'should match partially (#3)');
+  t.equal(is({type: 'paragraph'}, node), false, 'should match partially (#4)');
 
-    it('should fail without node', function () {
-        throws(function () {
-            is();
-        }, /Expected node/);
-    });
+  t.test('should accept a test', function (st) {
+    /** Test. */
+    function test(node, n) {
+      return n === 5;
+    }
 
-    it('should return true without test', function () {
-        equal(is(null, node), true);
-    });
+    st.equal(is(test, node), false);
+    st.equal(is(test, node, 0, parent), false);
+    st.equal(is(test, node, 5, parent), true);
 
-    it('should match types', function () {
-        equal(is('strong', node), true);
-        equal(is('emphasis', node), false);
-    });
+    st.end();
+  });
 
-    it('should match partially', function () {
-        equal(is(node, node), true);
-        equal(is({
-            'type': 'strong'
-        }, node), true);
+  t.test('should invoke test', function (st) {
+    var context = {foo: 'bar'};
 
-        equal(is({
-            'type': 'paragraph'
-        }, parent), true);
-    });
+    st.plan(4);
 
-    it('should accept a test', function () {
-        /** Test. */
-        function test(node, n) {
-            return n === 5;
-        }
+    /** Test. */
+    function test(a, b, c) {
+      st.equal(this, context);
+      st.equal(a, node);
+      st.equal(b, 5);
+      st.equal(c, parent);
+    }
 
-        equal(is(test, node), false);
-        equal(is(test, node, 0, parent), false);
-        equal(is(test, node, 5, parent), true);
-    });
+    is(test, node, 5, parent, context);
+  });
 
-    it('should invoke test', function (done) {
-        var context = {
-            'foo': 'bar'
-        };
-
-        /** Test. */
-        function test(a, b, c) {
-            equal(this, context);
-            equal(a, node);
-            equal(b, 5);
-            equal(c, parent);
-            done();
-        }
-
-        is(test, node, 5, parent, context);
-    });
+  t.end();
 });

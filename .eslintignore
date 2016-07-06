@@ -1,6 +1,0 @@
-build/
-components/
-coverage/
-build.js
-unist-util-is.js
-unist-util-is.min.js

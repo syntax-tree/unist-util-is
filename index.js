@@ -9,6 +9,10 @@
 'use strict';
 
 /* eslint-env commonjs */
+/* eslint-disable max-params */
+
+/* Expose. */
+module.exports = is;
 
 /**
  * Test.
@@ -26,7 +30,7 @@
  * @type {is~test}
  */
 function first() {
-    return true;
+  return true;
 }
 
 /**
@@ -37,9 +41,9 @@ function first() {
  * @return {is~test} - Tester.
  */
 function typeFactory(test) {
-    return function (node) {
-        return Boolean(node && node.type === test);
-    }
+  return function (node) {
+    return Boolean(node && node.type === test);
+  };
 }
 
 /**
@@ -50,52 +54,22 @@ function typeFactory(test) {
  * @return {is~test} - Tester.
  */
 function matchesFactory(test) {
-    return function (node) {
-        var key;
+  return function (node) {
+    var key;
 
-        for (key in test) {
-            if (node[key] !== test[key]) {
-                return false;
-            }
-        }
-
-        return true;
+    for (key in test) {
+      if (node[key] !== test[key]) {
+        return false;
+      }
     }
+
+    return true;
+  };
 }
 
 /**
  * Assert if `test` passes for `node`.
  * When a `parent` node is known the `index` of node
- *
- * @example
- *   is(null, {type: 'strong'}); // true
- *
- * @example
- *   is('strong', {type: 'strong'}); // true
- *   is('emphasis', {type: 'strong'}); // false
- *
- * @example
- *   var node = {type: 'strong'};
- *   is(node, node) // true
- *   is(node, {type: 'strong'}) // false
- *
- * @example
- *   var node = {type: 'strong'};
- *   var parent = {type: 'paragraph', children: [node]};
- *   function test(node, n) {return n === 5};
- *   is(test, {type: 'strong'}); // false
- *   is(test, {type: 'strong'}, 4, parent); // false
- *   is(test, {type: 'strong'}, 5, parent); // true
- *
- * @example
- *   var node = {type: 'strong'};
- *   var parent = {type: 'paragraph', children: [node]};
- *   is('strong'); // throws
- *   is('strong', node, 0) // throws
- *   is('strong', node, null, parent) // throws
- *   is('strong', node, 0, {type: 'paragraph'}) // throws
- *   is('strong', node, -1, parent) // throws
- *   is('strong', node, Infinity, parent) // throws
  *
  * @param {(string|Node|is~test)?} test - Tester.
  * @param {Node} node - Node to test.
@@ -105,43 +79,37 @@ function matchesFactory(test) {
  * @return {boolean} - Whether `test` passes.
  */
 function is(test, node, index, parent, context) {
-    var hasParent = parent !== null && parent !== undefined;
-    var hasIndex = index !== null && index !== undefined;
+  var hasParent = parent !== null && parent !== undefined;
+  var hasIndex = index !== null && index !== undefined;
 
-    if (typeof test === 'string') {
-        test = typeFactory(test);
-    } else if (test === null || test === undefined) {
-        test = first;
-    } else if (typeof test === 'object') {
-        test = matchesFactory(test);
-    } else if (typeof test !== 'function') {
-        throw new Error('Expected function, string, or object as test');
-    }
+  if (typeof test === 'string') {
+    test = typeFactory(test);
+  } else if (test === null || test === undefined) {
+    test = first;
+  } else if (typeof test === 'object') {
+    test = matchesFactory(test);
+  } else if (typeof test !== 'function') {
+    throw new Error('Expected function, string, or object as test');
+  }
 
-    if (!node || !node.type) {
-        throw new Error('Expected node');
-    }
+  if (!node || !node.type) {
+    throw new Error('Expected node');
+  }
 
-    if (
-        hasIndex &&
-        (typeof index !== 'number' || index < 0 || index === Infinity)
-    ) {
-        throw new Error('Expected positive finite index or child node');
-    }
+  if (
+    hasIndex &&
+    (typeof index !== 'number' || index < 0 || index === Infinity)
+  ) {
+    throw new Error('Expected positive finite index or child node');
+  }
 
-    if (hasParent && (!parent || !parent.type || !parent.children)) {
-        throw new Error('Expected parent node');
-    }
+  if (hasParent && (!parent || !parent.type || !parent.children)) {
+    throw new Error('Expected parent node');
+  }
 
-    if (hasParent !== hasIndex) {
-        throw new Error('Expected both parent and index');
-    }
+  if (hasParent !== hasIndex) {
+    throw new Error('Expected both parent and index');
+  }
 
-    return Boolean(test.call(context, node, index, parent));
+  return Boolean(test.call(context, node, index, parent));
 }
-
-/*
- * Expose.
- */
-
-module.exports = is;
