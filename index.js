@@ -92,10 +92,6 @@ function is(test, node, index, parent, context) {
     throw new Error('Expected function, string, or object as test');
   }
 
-  if (!node || !node.type) {
-    throw new Error('Expected node');
-  }
-
   if (
     hasIndex &&
     (typeof index !== 'number' || index < 0 || index === Infinity)
@@ -103,8 +99,12 @@ function is(test, node, index, parent, context) {
     throw new Error('Expected positive finite index or child node');
   }
 
-  if (hasParent && (!parent || !parent.type || !parent.children)) {
+  if (hasParent && (!is(null, parent) || !parent.children)) {
     throw new Error('Expected parent node');
+  }
+
+  if (!node || !node.type || typeof node.type !== 'string') {
+    return false;
   }
 
   if (hasParent !== hasIndex) {

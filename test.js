@@ -85,23 +85,17 @@ test('unist-util-is', function (t) {
     'should throw `parent` xor `index` are given (#2)'
   );
 
-  t.throws(
-    function () {
-      is();
-    },
-    /Expected node/,
-    'should fail without node'
-  );
+  t.notok(is(), 'should not fail without node');
+  t.ok(is(null, node), 'should check if given a node (#1)');
+  t.notok(is(null, {children: []}), 'should check if given a node (#2)');
 
-  t.equal(is(null, node), true, 'should return true without test');
+  t.ok(is('strong', node), 'should match types (#1)');
+  t.notok(is('emphasis', node), 'should match types (#2)');
 
-  t.equal(is('strong', node), true, 'should match types (#1)');
-  t.equal(is('emphasis', node), false, 'should match types (#2)');
-
-  t.equal(is(node, node), true, 'should match partially (#1)');
-  t.equal(is({type: 'strong'}, node), true, 'should match partially (#2)');
-  t.equal(is({type: 'paragraph'}, parent), true, 'should match partially (#3)');
-  t.equal(is({type: 'paragraph'}, node), false, 'should match partially (#4)');
+  t.ok(is(node, node), 'should match partially (#1)');
+  t.ok(is({type: 'strong'}, node), 'should match partially (#2)');
+  t.ok(is({type: 'paragraph'}, parent), 'should match partially (#3)');
+  t.notok(is({type: 'paragraph'}, node), 'should match partially (#4)');
 
   t.test('should accept a test', function (st) {
     /** Test. */
@@ -109,9 +103,9 @@ test('unist-util-is', function (t) {
       return n === 5;
     }
 
-    st.equal(is(test, node), false);
-    st.equal(is(test, node, 0, parent), false);
-    st.equal(is(test, node, 5, parent), true);
+    t.notok(is(test, node));
+    t.notok(is(test, node, 0, parent));
+    st.ok(is(test, node, 5, parent));
 
     st.end();
   });

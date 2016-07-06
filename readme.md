@@ -22,6 +22,8 @@ var parent = {type: 'paragraph', children: [node]};
 
 function test(node, n) { return n === 5 }
 
+is(); // false
+is(null, {children: []}); // false
 is(null, node); // true
 is('strong', node); // true
 is('emphasis', node); // false
@@ -42,19 +44,20 @@ is(test, node, 5, parent); // true
 ###### Parameters
 
 *   `test` ([`Function`][test], `string`, or `Node`, optional)
-    —  When not given, returns `true` for the first node.
+    —  When not given, checks if `node` is a [`Node`][node].
     When `string`, works like passing `function (node) {return
     node.type === test}`.
     When `object`, checks that all keys in `test` are in `node`,
     and that they have (strictly) equal values.
-*   `node` ([`Node`][node]) — Node to check;
+*   `node` ([`Node`][node]) — Node to check.  `false` is returned;
 *   `index` (`number`, optional) — Position of `node` in `parent`;
 *   `parent` (`Node`, optional) — Parent of `node`;
 *   `context` (`*`, optiona) — Context object to invoke `test` with.
 
 ###### Returns
 
-`boolean` — Whether `test` passed.
+`boolean` — Whether `test` passed _and_ `node` is a [`Node`][node] (object
+with `type` set to non-empty `string`).
 
 #### `function test(node[, index, parent])`
 
