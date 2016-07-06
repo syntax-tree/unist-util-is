@@ -41,7 +41,7 @@ describe('unist-util-is', function () {
     it('should throw when `test` is invalid', function () {
         throws(function () {
             is(false);
-        }, /Expected function, string, or node as test/);
+        }, /Expected function, string, or object as test/);
     });
 
     it('should throw when `index` is invalid', function () {
@@ -95,11 +95,15 @@ describe('unist-util-is', function () {
         equal(is('emphasis', node), false);
     });
 
-    it('should match nodes', function () {
+    it('should match partially', function () {
         equal(is(node, node), true);
-        equal(is(node, {
+        equal(is({
             'type': 'strong'
-        }), false);
+        }, node), true);
+
+        equal(is({
+            'type': 'paragraph'
+        }, parent), true);
     });
 
     it('should accept a test', function () {

@@ -43,15 +43,23 @@ function typeFactory(test) {
 }
 
 /**
- * Utility to convert a node into a function which checks
- * a given node for strict equality.
+ * Utility assert each property in `test` is represented
+ * in `node`, and each values are strictly equal.
  *
- * @param {Node} test - Node to test.
+ * @param {Object} test - Spec.
  * @return {is~test} - Tester.
  */
-function nodeFactory(test) {
+function matchesFactory(test) {
     return function (node) {
-        return node === test;
+        var key;
+
+        for (key in test) {
+            if (node[key] !== test[key]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
@@ -102,12 +110,12 @@ function is(test, node, index, parent, context) {
 
     if (typeof test === 'string') {
         test = typeFactory(test);
-    } else if (test && test.type) {
-        test = nodeFactory(test);
     } else if (test === null || test === undefined) {
         test = first;
+    } else if (typeof test === 'object') {
+        test = matchesFactory(test);
     } else if (typeof test !== 'function') {
-        throw new Error('Expected function, string, or node as test');
+        throw new Error('Expected function, string, or object as test');
     }
 
     if (!node || !node.type) {

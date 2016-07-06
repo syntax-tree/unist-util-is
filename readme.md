@@ -39,7 +39,8 @@ is('strong', node); // true
 is('emphasis', node); // false
 
 is(node, node) // true
-is(node, {type: 'strong'}) // false
+is({type: 'paragraph'}, parent) // true
+is({type: 'strong'}, parent) // false
 
 is(test, node); // false
 is(test, node, 4, parent); // false
@@ -58,11 +59,11 @@ Utility to check if a node passes a test.
     `Node`, optional)
     — When not given, return is return `true`.
 
-    Passing a `string` is equal to passing
+    Passing a `string` is like passing
     `function (node) {return node.type === test}`.
 
-    Passing a `node` is equal to passing
-    `function (node) {return node === test}`.
+    Passing an `object` checks that all keys in `test` are in `node`,
+    and that they have (strictly) equal values.
 
 *   `node` (`Node`)
     — [Node](https://github.com/wooorm/unist#unist-nodes) to test;
