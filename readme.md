@@ -1,12 +1,10 @@
 # unist-util-is [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov]
 
-<!--lint disable heading-increment list-item-spacing no-duplicate-headings-->
-
 [**Unist**][unist] utility to check if a node passes a test.
 
 ## Installation
 
-[npm][npm-install]:
+[npm][]:
 
 ```bash
 npm install unist-util-is
@@ -89,7 +87,7 @@ with `type` set to non-empty `string`).
 
 [codecov]: https://codecov.io/github/wooorm/unist-util-is
 
-[npm-install]: https://docs.npmjs.com/cli/install
+[npm]: https://docs.npmjs.com/cli/install
 
 [license]: LICENSE
 
