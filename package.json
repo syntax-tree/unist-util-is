@@ -5,11 +5,6 @@
   "license": "MIT",
   "keywords": [
     "unist",
-    "mdast",
-    "markdown",
-    "retext",
-    "natural",
-    "language",
     "node",
     "is",
     "equal",
@@ -18,15 +13,16 @@
     "util",
     "utility"
   ],
-  "files": [
-    "index.js"
-  ],
-  "repository": "https://github.com/wooorm/unist-util-is.git",
+  "repository": "https://github.com/wooorm/unist-util-is",
   "bugs": "https://github.com/wooorm/hast-util-to-html/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)"
   ],
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {},
   "devDependencies": {
     "browserify": "^13.0.1",
     "esmangle": "^1.0.1",
