@@ -64,8 +64,8 @@ with `type` set to non-empty `string`).
 ###### Parameters
 
 *   `node` (`Node`) — Node to test;
-*   `index` (`number`?) — Position of `node` in `parent`.
-*   `parent` (`Node`?) — Parent of `node`.
+*   `index` (`number?`) — Position of `node` in `parent`;
+*   `parent` (`Node?`) — Parent of `node`.
 
 ###### Context
 
