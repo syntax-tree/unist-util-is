@@ -1,20 +1,8 @@
-/**
- * @author Titus Wormer
- * @copyright 2015 Titus Wormer
- * @license MIT
- * @module unist:util:is
- * @fileoverview Test suite for `unit-util-is`.
- */
-
 'use strict';
 
-/* eslint-env node */
-
-/* Dependencies. */
 var test = require('tape');
 var is = require('./');
 
-/* Tests. */
 test('unist-util-is', function (t) {
   var node = {type: 'strong'};
   var parent = {type: 'paragraph', children: []};
@@ -98,7 +86,6 @@ test('unist-util-is', function (t) {
   t.notok(is({type: 'paragraph'}, node), 'should match partially (#4)');
 
   t.test('should accept a test', function (st) {
-    /** Test. */
     function test(node, n) {
       return n === 5;
     }
@@ -115,7 +102,6 @@ test('unist-util-is', function (t) {
 
     st.plan(4);
 
-    /** Test. */
     function test(a, b, c) {
       st.equal(this, context);
       st.equal(a, node);
