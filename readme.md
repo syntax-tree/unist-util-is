@@ -79,13 +79,13 @@ with `type` set to non-empty `string`).
 
 <!-- Definitions -->
 
-[travis-badge]: https://img.shields.io/travis/wooorm/unist-util-is.svg
+[travis-badge]: https://img.shields.io/travis/syntax-tree/unist-util-is.svg
 
-[travis]: https://travis-ci.org/wooorm/unist-util-is
+[travis]: https://travis-ci.org/syntax-tree/unist-util-is
 
-[codecov-badge]: https://img.shields.io/codecov/c/github/wooorm/unist-util-is.svg
+[codecov-badge]: https://img.shields.io/codecov/c/github/syntax-tree/unist-util-is.svg
 
-[codecov]: https://codecov.io/github/wooorm/unist-util-is
+[codecov]: https://codecov.io/github/syntax-tree/unist-util-is
 
 [npm]: https://docs.npmjs.com/cli/install
 
@@ -93,8 +93,8 @@ with `type` set to non-empty `string`).
 
 [author]: http://wooorm.com
 
-[unist]: https://github.com/wooorm/unist
+[unist]: https://github.com/syntax-tree/unist
 
-[node]: https://github.com/wooorm/unist#node
+[node]: https://github.com/syntax-tree/unist#node
 
 [test]: #function-testnode-index-parent
