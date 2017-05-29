@@ -41,10 +41,11 @@ is(test, node, 5, parent); // true
 
 ###### Parameters
 
-*   `test` ([`Function`][test], `string`, or `Node`, optional)
+*   `test` ([`Function`][test], `string`, `Object`, or `Array.<Test>`, optional)
     —  When not given, checks if `node` is a [`Node`][node].
     When `string`, works like passing `function (node) {return
     node.type === test}`.
+    When `array`, checks any one of the subtests pass.
     When `object`, checks that all keys in `test` are in `node`,
     and that they have (strictly) equal values.
 *   `node` ([`Node`][node]) — Node to check.  `false` is returned;

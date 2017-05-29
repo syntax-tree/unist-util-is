@@ -112,5 +112,24 @@ test('unist-util-is', function (t) {
     is(test, node, 5, parent, context);
   });
 
+  t.ok(is(['strong', 'emphasis'], node), 'should match arrays (#1)');
+  t.notok(is(['b', 'i'], node), 'should match arrays (#2)');
+
+  t.test('should match arrays (#3)', function (st) {
+    var context = {foo: 'bar'};
+
+    st.plan(5);
+
+    st.ok(is([test, 'strong'], node, 5, parent, context));
+
+    function test(a, b, c) {
+      st.equal(this, context);
+      st.equal(a, node);
+      st.equal(b, 5);
+      st.equal(c, parent);
+      return false;
+    }
+  });
+
   t.end();
 });

@@ -10,16 +10,7 @@ module.exports = is;
 function is(test, node, index, parent, context) {
   var hasParent = parent !== null && parent !== undefined;
   var hasIndex = index !== null && index !== undefined;
-
-  if (typeof test === 'string') {
-    test = typeFactory(test);
-  } else if (test === null || test === undefined) {
-    test = first;
-  } else if (typeof test === 'object') {
-    test = matchesFactory(test);
-  } else if (typeof test !== 'function') {
-    throw new Error('Expected function, string, or object as test');
-  }
+  var check = convert(test);
 
   if (
     hasIndex &&
@@ -40,7 +31,39 @@ function is(test, node, index, parent, context) {
     throw new Error('Expected both parent and index');
   }
 
-  return Boolean(test.call(context, node, index, parent));
+  return Boolean(check.call(context, node, index, parent));
+}
+
+function convert(test) {
+  if (typeof test === 'string') {
+    return typeFactory(test);
+  }
+
+  if (test === null || test === undefined) {
+    return ok;
+  }
+
+  if (typeof test === 'object') {
+    return ('length' in test ? anyFactory : matchesFactory)(test);
+  }
+
+  if (typeof test === 'function') {
+    return test;
+  }
+
+  throw new Error('Expected function, string, or object as test');
+}
+
+function convertAll(tests) {
+  var results = [];
+  var length = tests.length;
+  var index = -1;
+
+  while (++index < length) {
+    results[index] = convert(tests[index]);
+  }
+
+  return results;
 }
 
 /* Utility assert each property in `test` is represented
@@ -61,6 +84,25 @@ function matchesFactory(test) {
   }
 }
 
+function anyFactory(tests) {
+  var checks = convertAll(tests);
+  var length = checks.length;
+
+  return matches;
+
+  function matches() {
+    var index = -1;
+
+    while (++index < length) {
+      if (checks[index].apply(this, arguments)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+}
+
 /* Utility to convert a string into a function which checks
  * a given node’s type for said string. */
 function typeFactory(test) {
@@ -72,6 +114,6 @@ function typeFactory(test) {
 }
 
 /* Utility to return true. */
-function first() {
+function ok() {
   return true;
 }
