@@ -51,7 +51,7 @@ is(test, node, 5, parent); // true
 *   `node` ([`Node`][node]) — Node to check.  `false` is returned;
 *   `index` (`number`, optional) — Position of `node` in `parent`;
 *   `parent` (`Node`, optional) — Parent of `node`;
-*   `context` (`*`, optiona) — Context object to invoke `test` with.
+*   `context` (`*`, optional) — Context object to invoke `test` with.
 
 ###### Returns
 
