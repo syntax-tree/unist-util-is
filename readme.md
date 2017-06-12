@@ -74,6 +74,25 @@ with `type` set to non-empty `string`).
 
 `boolean?` — Whether `node` matches.
 
+## Related
+
+*   [`unist-util-find-after`](https://github.com/syntax-tree/unist-util-find-after)
+    — Find a node after another node
+*   [`unist-util-find-before`](https://github.com/syntax-tree/unist-util-find-before)
+    — Find a node before another node
+*   [`unist-util-find-all-after`](https://github.com/syntax-tree/unist-util-find-all-after)
+    — Find all nodes after another node
+*   [`unist-util-find-all-before`](https://github.com/syntax-tree/unist-util-find-all-before)
+    — Find all nodes before another node
+*   [`unist-util-find-all-between`](https://github.com/mrzmmr/unist-util-find-all-between)
+    — Find all nodes between two nodes
+*   [`unist-util-find`](https://github.com/blahah/unist-util-find)
+    — Find nodes matching a predicate
+*   [`unist-util-filter`](https://github.com/eush77/unist-util-filter)
+    — Create a new tree with nodes that pass a check
+*   [`unist-util-remove`](https://github.com/eush77/unist-util-remove)
+    — Remove nodes from tree
+
 ## License
 
 [MIT][license] © [Titus Wormer][author]
