@@ -47,11 +47,11 @@ is(test, node, 5, parent); // true
     node.type === test}`.
     When `array`, checks any one of the subtests pass.
     When `object`, checks that all keys in `test` are in `node`,
-    and that they have (strictly) equal values.
-*   `node` ([`Node`][node]) — Node to check.  `false` is returned;
-*   `index` (`number`, optional) — Position of `node` in `parent`;
-*   `parent` (`Node`, optional) — Parent of `node`;
-*   `context` (`*`, optional) — Context object to invoke `test` with.
+    and that they have (strictly) equal values
+*   `node` ([`Node`][node]) — Node to check.  `false` is returned
+*   `index` (`number`, optional) — Position of `node` in `parent`
+*   `parent` (`Node`, optional) — Parent of `node`
+*   `context` (`*`, optional) — Context object to invoke `test` with
 
 ###### Returns
 
@@ -62,9 +62,9 @@ with `type` set to non-empty `string`).
 
 ###### Parameters
 
-*   `node` (`Node`) — Node to test;
-*   `index` (`number?`) — Position of `node` in `parent`;
-*   `parent` (`Node?`) — Parent of `node`.
+*   `node` (`Node`) — Node to test
+*   `index` (`number?`) — Position of `node` in `parent`
+*   `parent` (`Node?`) — Parent of `node`
 
 ###### Context
 
