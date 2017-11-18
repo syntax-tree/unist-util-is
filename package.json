@@ -13,7 +13,7 @@
     "util",
     "utility"
   ],
-  "repository": "https://github.com/syntax-tree/unist-util-is",
+  "repository": "syntax-tree/unist-util-is",
   "bugs": "https://github.com/syntax-tree/hast-util-to-html/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (http://wooorm.com)",
   "contributors": [
