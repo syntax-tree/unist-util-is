@@ -13,26 +13,28 @@ npm install unist-util-is
 ## Usage
 
 ```js
-var is = require('unist-util-is');
+var is = require('unist-util-is')
 
-var node = {type: 'strong'};
-var parent = {type: 'paragraph', children: [node]};
+var node = {type: 'strong'}
+var parent = {type: 'paragraph', children: [node]}
 
-function test(node, n) { return n === 5 }
+function test(node, n) {
+  return n === 5
+}
 
-is(); // false
-is(null, {children: []}); // false
-is(null, node); // true
-is('strong', node); // true
-is('emphasis', node); // false
+is() // => false
+is(null, {children: []}) // => false
+is(null, node) // => true
+is('strong', node) // => true
+is('emphasis', node) // => false
 
-is(node, node) // true
-is({type: 'paragraph'}, parent) // true
-is({type: 'strong'}, parent) // false
+is(node, node) // => true
+is({type: 'paragraph'}, parent) // => true
+is({type: 'strong'}, parent) // => false
 
-is(test, node); // false
-is(test, node, 4, parent); // false
-is(test, node, 5, parent); // true
+is(test, node) // => false
+is(test, node, 4, parent) // => false
+is(test, node, 5, parent) // => true
 ```
 
 ## API
