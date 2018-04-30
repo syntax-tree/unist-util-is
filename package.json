@@ -24,13 +24,13 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^14.0.0",
+    "browserify": "^16.0.0",
     "esmangle": "^1.0.1",
     "nyc": "^11.0.0",
-    "remark-cli": "^4.0.0",
-    "remark-preset-wooorm": "^3.0.0",
+    "remark-cli": "^5.0.0",
+    "remark-preset-wooorm": "^4.0.0",
     "tape": "^4.0.0",
-    "xo": "^0.18.1"
+    "xo": "^0.20.0"
   },
   "scripts": {
     "build-md": "remark . -qfo",
@@ -46,6 +46,9 @@
     "space": true,
     "esnext": false,
     "rules": {
+      "guard-for-in": "off",
+      "no-var": "off",
+      "prefer-arrow-callback": "off",
       "unicorn/prefer-type-error": "off"
     },
     "ignore": [
