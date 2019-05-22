@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-- lts/boron
-- node
+  - lts/dubnium
+  - node
 after_script: bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: releases
@@ -9,7 +9,7 @@ deploy:
   api_key:
     secure: eYw6LD3X/nL5HEJX2dtfKOhawNiFfB0a1m9DzhShvltn1ZYdSXyqt4THHbwFmoQN3cnvP5kE6Dj0evRI2Rw9n+vPGBXyRHfaUVjntaZYItuf0UpJS+wm6cUBvFg499g25mSZ9V1HVbXX6liXzRD3NhIHWDWDKXo+oMOzzJwG3BNtIyBTyf7SLBX5Gsf+POVINOJxH5bp7Cqhw/KDR+GmurM9DxfjK/bVBvVs7L9dLvVU0/eLh29XWBd0fwwosrFJYq4bqvcQR5zOybPKQ0rO0bRv9URpao/NULY95wVJhFvlR+eQEbMzokhZhZ9atBU0iAVCV0hbdvvboMnOtHeTWR3xj71G98JRsM47V1Q+DTPcnyIsZPFUauII4S9dnyhF1UU4tBHeW/Eug4LdiLjvskKxVIOdSwXgiRUKAVKyfHKpmkAJ2k2Sjd2L6rcUPAJHOG18i6708tQjR5YRohxiIm0OAMeusXtCP8OeYclTdDAeaW0cPXBS09kZOOPGr3chEXD8MTJf1OtWoBrkm60u/9eW3iP64SJpGLluyCBw+wz1gUx0YLMvX2IaHS0MQJHBK9FTNiyPkiPaQJ/JYMGITtp+qB1AOh2d8IGut13WL8gsZp2Q1xcbwqr/n6icAEFonHporyhltiCumhnTqIw6QqMS/NOA0C3IkOmEZKIK/5o=
   file:
-    - "unist-util-is.js"
-    - "unist-util-is.min.js"
+    - 'unist-util-is.js'
+    - 'unist-util-is.min.js'
   on:
     tags: true
