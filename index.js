@@ -1,11 +1,10 @@
 'use strict'
 
-/* eslint-disable max-params */
-
 module.exports = is
 
 // Assert if `test` passes for `node`.   When a `parent` node is known the
 // `index` of node.
+// eslint-disable-next-line max-params
 function is(test, node, index, parent, context) {
   var hasParent = parent !== null && parent !== undefined
   var hasIndex = index !== null && index !== undefined

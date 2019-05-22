@@ -57,7 +57,7 @@ is(test, node, 5, parent) // => true
 
 ###### Returns
 
-`boolean` — Whether `test` passed _and_ `node` is a [`Node`][node] (object
+`boolean` — Whether `test` passed *and* `node` is a [`Node`][node] (object
 with `type` set to non-empty `string`).
 
 #### `function test(node[, index, parent])`
