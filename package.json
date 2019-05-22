@@ -54,9 +54,6 @@
     "prettier": true,
     "esnext": false,
     "rules": {
-      "guard-for-in": "off",
-      "no-var": "off",
-      "prefer-arrow-callback": "off",
       "unicorn/prefer-type-error": "off"
     },
     "ignore": [
