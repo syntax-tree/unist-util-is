@@ -8,13 +8,13 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**Unist**][unist] utility to check if a node passes a test.
+[**unist**][unist] utility to check if a node passes a test.
 
-## Installation
+## Install
 
 [npm][]:
 
-```bash
+```sh
 npm install unist-util-is
 ```
 
@@ -53,20 +53,19 @@ is(test, node, 5, parent) // => true
 
 *   `test` ([`Function`][test], `string`, `Object`, or `Array.<Test>`, optional)
     —  When not given, checks if `node` is a [`Node`][node].
-    When `string`, works like passing `function (node) {return
-    node.type === test}`.
-    When `array`, checks any one of the subtests pass.
+    When `string`, works like passing `node => node.type === test`.
+    When `array`, checks if any one of the subtests pass.
     When `object`, checks that all keys in `test` are in `node`,
-    and that they have (strictly) equal values
+    and that they have strictly equal values
 *   `node` ([`Node`][node]) — Node to check.  `false` is returned
-*   `index` (`number`, optional) — Position of `node` in `parent`
-*   `parent` (`Node`, optional) — Parent of `node`
+*   `index` (`number`, optional) — [Index][] of `node` in `parent`
+*   `parent` ([`Node`][node], optional) — [Parent][] of `node`
 *   `context` (`*`, optional) — Context object to invoke `test` with
 
 ###### Returns
 
 `boolean` — Whether `test` passed *and* `node` is a [`Node`][node] (object
-with `type` set to non-empty `string`).
+with `type` set to a non-empty `string`).
 
 #### `function test(node[, index, parent])`
 
@@ -105,11 +104,13 @@ with `type` set to non-empty `string`).
 
 ## Contribute
 
-See [`contributing.md` in `syntax-tree/unist`][contributing] for ways to get
+See [`contributing.md` in `syntax-tree/.github`][contributing] for ways to get
 started.
+See [`support.md`][support] for ways to get help.
 
-This organisation has a [Code of Conduct][coc].  By interacting with this
-repository, organisation, or community you agree to abide by its terms.
+This project has a [Code of Conduct][coc].
+By interacting with this repository, organisation, or community you agree to
+abide by its terms.
 
 ## License
 
@@ -149,12 +150,18 @@ repository, organisation, or community you agree to abide by its terms.
 
 [author]: https://wooorm.com
 
+[contributing]: https://github.com/syntax-tree/.github/blob/master/contributing.md
+
+[support]: https://github.com/syntax-tree/.github/blob/master/support.md
+
+[coc]: https://github.com/syntax-tree/.github/blob/master/code-of-conduct.md
+
 [unist]: https://github.com/syntax-tree/unist
 
 [node]: https://github.com/syntax-tree/unist#node
 
+[parent]: https://github.com/syntax-tree/unist#parent-1
+
+[index]: https://github.com/syntax-tree/unist#index
+
 [test]: #function-testnode-index-parent
-
-[contributing]: https://github.com/syntax-tree/unist/blob/master/contributing.md
-
-[coc]: https://github.com/syntax-tree/unist/blob/master/code-of-conduct.md
