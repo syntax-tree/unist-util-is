@@ -83,6 +83,41 @@ with `type` set to a non-empty `string`).
 
 `boolean?` — Whether `node` matches.
 
+### `is.convert(test)`
+
+Create a test function from `test`, that can later be called with a `node`,
+`index`, and `parent`.
+Useful if you’re going to test many nodes, for example when creating a utility
+where something else passes an is-compatible test.
+
+Can also be accessed with `require('unist-util-is/convert')`.
+
+For example:
+
+```js
+var u = require('unist-builder')
+var convert = require('unist-util-is/convert')
+
+var test = convert('leaf')
+
+var tree = u('tree', [
+  u('node', [u('leaf', '1')]),
+  u('leaf', '2'),
+  u('node', [u('leaf', '3'), u('leaf', '4')]),
+  u('leaf', '5')
+])
+
+var leafs = tree.children.filter((child, index) => test(child, index, tree))
+
+console.log(leafs)
+```
+
+Yields:
+
+```js
+[({type: 'leaf', value: '2'}, {type: 'leaf', value: '5'})]
+```
+
 ## Related
 
 *   [`unist-util-find-after`](https://github.com/syntax-tree/unist-util-find-after)
