@@ -31,49 +31,49 @@ function test(node, n) {
 }
 
 is() // => false
-is(null, {children: []}) // => false
-is(null, node) // => true
-is('strong', node) // => true
-is('emphasis', node) // => false
+is({children: []}) // => false
+is(node) // => true
+is(node, 'strong') // => true
+is(node, 'emphasis') // => false
 
 is(node, node) // => true
-is({type: 'paragraph'}, parent) // => true
-is({type: 'strong'}, parent) // => false
+is(parent, {type: 'paragraph'}) // => true
+is(parent, {type: 'strong'}) // => false
 
-is(test, node) // => false
-is(test, node, 4, parent) // => false
-is(test, node, 5, parent) // => true
+is(node, test) // => false
+is(node, test, 4, parent) // => false
+is(node, test, 5, parent) // => true
 ```
 
 ## API
 
-### `is(test, node[, index, parent[, context]])`
+### `is(node[, test[, index, parent[, context]]])`
 
 ###### Parameters
 
+*   `node` ([`Node`][node]) — Node to check.
 *   `test` ([`Function`][test], `string`, `Object`, or `Array.<Test>`, optional)
     —  When not given, checks if `node` is a [`Node`][node].
     When `string`, works like passing `node => node.type === test`.
     When `array`, checks if any one of the subtests pass.
     When `object`, checks that all keys in `test` are in `node`,
     and that they have strictly equal values
-*   `node` ([`Node`][node]) — Node to check.  `false` is returned
 *   `index` (`number`, optional) — [Index][] of `node` in `parent`
 *   `parent` ([`Node`][node], optional) — [Parent][] of `node`
 *   `context` (`*`, optional) — Context object to invoke `test` with
 
 ###### Returns
 
-`boolean` — Whether `test` passed *and* `node` is a [`Node`][node] (object
-with `type` set to a non-empty `string`).
+`boolean` — Whether `test` passed *and* `node` is a [`Node`][node] (object with
+`type` set to a non-empty `string`).
 
 #### `function test(node[, index, parent])`
 
 ###### Parameters
 
-*   `node` (`Node`) — Node to test
-*   `index` (`number?`) — Position of `node` in `parent`
-*   `parent` (`Node?`) — Parent of `node`
+*   `node` ([`Node`][node]) — Node to check
+*   `index` (`number?`) — [Index][] of `node` in `parent`
+*   `parent` ([`Node?`][node]) — [Parent][] of `node`
 
 ###### Context
 

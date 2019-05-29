@@ -6,10 +6,10 @@ module.exports = is
 
 is.convert = convert
 
-// Assert if `test` passes for `node`.   When a `parent` node is known the
-// `index` of node.
+// Assert if `test` passes for `node`.
+// When a `parent` node is known the `index` of node should also be given.
 // eslint-disable-next-line max-params
-function is(test, node, index, parent, context) {
+function is(node, test, index, parent, context) {
   var hasParent = parent !== null && parent !== undefined
   var hasIndex = index !== null && index !== undefined
   var check = convert(test)
@@ -21,7 +21,7 @@ function is(test, node, index, parent, context) {
     throw new Error('Expected positive finite index or child node')
   }
 
-  if (hasParent && (!is(null, parent) || !parent.children)) {
+  if (hasParent && (!is(parent) || !parent.children)) {
     throw new Error('Expected parent node')
   }
 
