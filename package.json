@@ -21,27 +21,33 @@
   ],
   "files": [
     "index.js",
-    "convert.js"
+    "convert.js",
+    "types/index.d.ts"
   ],
+  "types": "types/index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "browserify": "^16.0.0",
+    "dtslint": "^0.9.0",
     "nyc": "^14.0.0",
     "prettier": "^1.0.0",
     "remark-cli": "^6.0.0",
     "remark-preset-wooorm": "^5.0.0",
     "tape": "^4.0.0",
     "tinyify": "^2.0.0",
+    "typescript": "^3.5.3",
+    "unified": "^8.3.2",
     "xo": "^0.24.0"
   },
   "scripts": {
-    "format": "remark . -qfo && prettier --write \"**/*.js\" && xo --fix",
+    "format": "remark . -qfo && prettier --write \"**/*.{js,ts}\" && xo --fix",
     "build-bundle": "browserify . -s unistUtilIs > unist-util-is.js",
     "build-mangle": "browserify . -s unistUtilIs -p tinyify > unist-util-is.min.js",
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test.js",
-    "test": "npm run format && npm run build && npm run test-coverage"
+    "test-types": "dtslint types",
+    "test": "npm run format && npm run build && npm run test-coverage && npm run test-types"
   },
   "prettier": {
     "tabWidth": 2,
