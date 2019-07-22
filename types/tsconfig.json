@@ -8,7 +8,8 @@
     "strictFunctionTypes": true,
     "baseUrl": ".",
     "paths": {
-      "unist-util-is": ["index.d.ts"]
+      "unist-util-is": ["index.d.ts"],
+      "unist-util-is/convert": ["convert.d.ts"]
     }
   }
 }

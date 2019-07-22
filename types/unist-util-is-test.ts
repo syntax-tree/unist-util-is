@@ -1,6 +1,7 @@
 import {Node, Parent} from 'unist'
 import unified = require('unified')
 import is = require('unist-util-is')
+import convert = require('unist-util-is/convert')
 
 /*=== setup ===*/
 interface Heading extends Parent {
@@ -143,3 +144,14 @@ unified().use(() => tree => {
   }
   return tree
 })
+
+/*=== convert ===*/
+convert<Heading>('heading')
+// $ExpectError
+convert<Heading>('element')
+convert<Heading>({type: 'heading', depth: 2})
+// $ExpectError
+convert<Element>({type: 'heading', depth: 2})
+convert<Heading>(isHeading)
+// $ExpectError
+convert<Element>(isHeading)

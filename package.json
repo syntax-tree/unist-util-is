@@ -22,7 +22,8 @@
   "files": [
     "index.js",
     "convert.js",
-    "types/index.d.ts"
+    "types/index.d.ts",
+    "types/convert.d.ts"
   ],
   "types": "types/index.d.ts",
   "dependencies": {},
