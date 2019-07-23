@@ -20,6 +20,10 @@ interface Element extends Parent {
   children: Node[]
 }
 
+interface Paragraph extends Parent {
+  type: 'ParagraphNode'
+}
+
 const heading: Node = {
   type: 'heading',
   depth: 2,
@@ -134,8 +138,37 @@ if (is<Element>(element, {type: 'element', tagName: 'section'})) {
 }
 
 /*=== type array of tests ===*/
-is(heading, ['heading', isElement, {type: 'ParagraphNode'}])
-is(element, ['heading', isElement, {type: 'ParagraphNode'}])
+is<Heading | Element | Paragraph>(heading, [
+  'heading',
+  isElement,
+  {type: 'ParagraphNode'}
+])
+if (
+  is<Heading | Element | Paragraph>(heading, [
+    'heading',
+    isElement,
+    {type: 'ParagraphNode'}
+  ])
+) {
+  switch (heading.type) {
+    case 'heading': {
+      heading // $ExpectType Heading
+      break
+    }
+    case 'element': {
+      heading // $ExpectType Element
+      break
+    }
+    case 'ParagraphNode': {
+      heading // $ExpectType Paragraph
+      break
+    }
+    // $ExpectError
+    case 'dne': {
+      break
+    }
+  }
+}
 
 /*=== usable in unified transform ===*/
 unified().use(() => tree => {
