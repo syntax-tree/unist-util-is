@@ -22,10 +22,10 @@
   "files": [
     "index.js",
     "convert.js",
-    "types/index.d.ts",
-    "types/convert.d.ts"
+    "index.d.ts",
+    "convert.d.ts"
   ],
-  "types": "types/index.d.ts",
+  "types": "index.d.ts",
   "dependencies": {},
   "devDependencies": {
     "browserify": "^16.0.0",
@@ -47,7 +47,7 @@
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test.js",
-    "test-types": "dtslint types",
+    "test-types": "dtslint .",
     "test": "npm run format && npm run build && npm run test-coverage && npm run test-types"
   },
   "prettier": {
