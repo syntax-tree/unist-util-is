@@ -17,7 +17,8 @@
   "bugs": "https://github.com/syntax-tree/unist-util-is/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
   "contributors": [
-    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+    "Christian Murphy <christian.murphy.42@gmail.com>"
   ],
   "files": [
     "index.js",
@@ -28,15 +29,15 @@
   "types": "index.d.ts",
   "dependencies": {},
   "devDependencies": {
+    "@types/mdast": "^3.0.3",
     "browserify": "^16.0.0",
-    "dtslint": "^0.9.0",
+    "dtslint": "^1.0.2",
     "nyc": "^14.0.0",
     "prettier": "^1.0.0",
     "remark-cli": "^7.0.0",
     "remark-preset-wooorm": "^6.0.0",
     "tape": "^4.0.0",
     "tinyify": "^2.0.0",
-    "typescript": "^3.5.3",
     "unified": "^8.3.2",
     "xo": "^0.24.0"
   },
