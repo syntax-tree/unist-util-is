@@ -1,15 +1,10 @@
 import {Node, Parent} from 'unist'
+import {Heading} from 'mdast'
 import unified = require('unified')
 import is = require('unist-util-is')
 import convert = require('unist-util-is/convert')
 
 /*=== setup ===*/
-interface Heading extends Parent {
-  type: 'heading'
-  depth: number
-  children: Node[]
-}
-
 interface Element extends Parent {
   type: 'element'
   tagName: string
