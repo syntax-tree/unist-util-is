@@ -31,15 +31,15 @@
   "devDependencies": {
     "@types/mdast": "^3.0.3",
     "browserify": "^16.0.0",
-    "dtslint": "^1.0.2",
+    "dtslint": "^2.0.0",
     "nyc": "^14.0.0",
     "prettier": "^1.0.0",
     "remark-cli": "^7.0.0",
     "remark-preset-wooorm": "^6.0.0",
     "tape": "^4.0.0",
     "tinyify": "^2.0.0",
-    "unified": "^8.3.2",
-    "xo": "^0.24.0"
+    "unified": "^8.0.0",
+    "xo": "^0.25.0"
   },
   "scripts": {
     "format": "remark . -qfo && prettier --write \"**/*.{js,ts}\" && xo --fix",
@@ -63,7 +63,8 @@
     "prettier": true,
     "esnext": false,
     "rules": {
-      "unicorn/prefer-type-error": "off"
+      "unicorn/prefer-type-error": "off",
+      "unicorn/prefer-reflect-apply": "off"
     },
     "ignore": [
       "unist-util-is.js"
