@@ -62,7 +62,7 @@ declare namespace unistUtilIs {
  */
 declare function unistUtilIs<T extends Node>(
   node: unknown,
-  test: unistUtilIs.Test<T> | Array<unistUtilIs.Test<any>>,
+  test?: unistUtilIs.Test<T> | Array<unistUtilIs.Test<any>>,
   index?: number,
   parent?: Parent,
   context?: any
