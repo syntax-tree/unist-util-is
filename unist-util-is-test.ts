@@ -183,3 +183,5 @@ convert<Element>({type: 'heading', depth: 2})
 convert<Heading>(isHeading)
 // $ExpectError
 convert<Element>(isHeading)
+convert<Node>(null)
+convert<Node>(undefined)
