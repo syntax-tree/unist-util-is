@@ -90,9 +90,8 @@ Create a test function from `test`, that can later be called with a `node`,
 Useful if you’re going to test many nodes, for example when creating a utility
 where something else passes an is-compatible test.
 
-The function created with `is.convert` does not validate any of the parameters
-with which it is called.  
-*Invalid values for `node`, `index` or `parent` will pass silently.*
+The created function is slightly faster because it expects valid input only.
+Therefore, passing invalid input, yields unexpected results.
 
 Can also be accessed with `require('unist-util-is/convert')`.
 
