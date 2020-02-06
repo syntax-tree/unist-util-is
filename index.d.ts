@@ -18,7 +18,7 @@ declare namespace unistUtilIs {
   type TestObject<T extends Node> = Partial<T>
 
   /**
-   * Check if a node passes a test
+   * Check if a node matches a specific TypeScript type
    *
    * @param node node to check
    * @param index index of node in parent
@@ -33,11 +33,24 @@ declare namespace unistUtilIs {
   ) => node is T
 
   /**
+   * Check if a node matches arbitrary criteria
+   * @param node node to check
+   * @param index index of node in parent
+   * @param parent parent of node
+   * @returns boolean if the node is a match
+   */
+  type TestPredicate = (node: Node, index?: number, parent?: Parent) => boolean
+
+  /**
    * Union of all the types of tests
    *
    * @typeParam T type of node that passes test
    */
-  type Test<T extends Node> = TestType<T> | TestObject<T> | TestFunction<T>
+  type Test<T extends Node> =
+    | TestType<T>
+    | TestObject<T>
+    | TestFunction<T>
+    | TestPredicate
 }
 
 /**
