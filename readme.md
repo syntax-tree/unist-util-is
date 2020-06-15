@@ -133,11 +133,9 @@ Yields:
     — Find all nodes before another node
 *   [`unist-util-find-all-between`](https://github.com/mrzmmr/unist-util-find-all-between)
     — Find all nodes between two nodes
-*   [`unist-util-find`](https://github.com/blahah/unist-util-find)
-    — Find nodes matching a predicate
-*   [`unist-util-filter`](https://github.com/eush77/unist-util-filter)
+*   [`unist-util-filter`](https://github.com/syntax-tree/unist-util-filter)
     — Create a new tree with nodes that pass a check
-*   [`unist-util-remove`](https://github.com/eush77/unist-util-remove)
+*   [`unist-util-remove`](https://github.com/syntax-tree/unist-util-remove)
     — Remove nodes from tree
 
 ## Contribute
