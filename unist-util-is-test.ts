@@ -166,7 +166,7 @@ if (
 }
 
 /*=== usable in unified transform ===*/
-unified().use(() => tree => {
+unified().use(() => (tree) => {
   if (is<Heading>(tree, 'heading')) {
     // do something
   }
