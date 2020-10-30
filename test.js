@@ -19,7 +19,7 @@ test('unist-util-is', function (t) {
     function () {
       is(node, null, -1, parent)
     },
-    /Expected positive finite index or child node/,
+    /Expected positive finite index/,
     'should throw when `index` is invalid (#1)'
   )
 
@@ -27,7 +27,7 @@ test('unist-util-is', function (t) {
     function () {
       is(node, null, Infinity, parent)
     },
-    /Expected positive finite index or child node/,
+    /Expected positive finite index/,
     'should throw when `index` is invalid (#2)'
   )
 
@@ -35,7 +35,7 @@ test('unist-util-is', function (t) {
     function () {
       is(node, null, false, parent)
     },
-    /Expected positive finite index or child node/,
+    /Expected positive finite index/,
     'should throw when `index` is invalid (#3)'
   )
 

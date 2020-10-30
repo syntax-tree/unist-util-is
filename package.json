@@ -70,6 +70,15 @@
     "prettier": true,
     "esnext": false,
     "rules": {
+      "eqeqeq": [
+        "error",
+        "always",
+        {
+          "null": "ignore"
+        }
+      ],
+      "max-params": "off",
+      "no-eq-null": "off",
       "unicorn/prefer-type-error": "off",
       "unicorn/prefer-reflect-apply": "off"
     },
