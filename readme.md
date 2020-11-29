@@ -154,9 +154,9 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/syntax-tree/unist-util-is.svg
+[build-badge]: https://github.com/syntax-tree/unist-util-is/workflows/main/badge.svg
 
-[build]: https://travis-ci.org/syntax-tree/unist-util-is
+[build]: https://github.com/syntax-tree/unist-util-is/actions
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/syntax-tree/unist-util-is.svg
 
