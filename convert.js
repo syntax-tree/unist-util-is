@@ -31,7 +31,7 @@ function allFactory(test) {
     var key
 
     for (key in test) {
-      if (node[key] !== test[key]) return
+      if (node[key] !== test[key]) return false
     }
 
     return true
@@ -56,6 +56,8 @@ function anyFactory(tests) {
         return true
       }
     }
+
+    return false
   }
 }
 
@@ -65,7 +67,7 @@ function typeFactory(test) {
   return type
 
   function type(node) {
-    return node && node.type === test
+    return Boolean(node && node.type === test)
   }
 }
 
