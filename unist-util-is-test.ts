@@ -4,13 +4,11 @@ import unified = require('unified')
 import is = require('unist-util-is')
 import convert = require('unist-util-is/convert')
 
-/*=== setup ===*/
+/* Setup. */
 interface Element extends Parent {
   type: 'element'
   tagName: string
-  properties: {
-    [key: string]: unknown
-  }
+  properties: Record<string, unknown>
   content: Node
   children: Node[]
 }
@@ -38,13 +36,13 @@ const isHeading = (node: unknown): node is Heading =>
 const isElement = (node: unknown): node is Element =>
   typeof node === 'object' && node !== null && (node as Node).type === 'element'
 
-/*=== types cannot be narrowed without predicate ===*/
+/* Types cannot be narrowed without predicate. */
 // $ExpectError
 const maybeHeading: Heading = heading
 // $ExpectError
 const maybeElement: Element = element
 
-/*=== missing params ===*/
+/* Missing parameters. */
 // $ExpectError
 is()
 // $ExpectError
@@ -52,18 +50,18 @@ is<Node>()
 // $ExpectError
 is<Node>(heading)
 
-/*=== invalid generic ===*/
+/* Incorrect generic. */
 // $ExpectError
 is<string>(heading, 'heading')
 // $ExpectError
 is<boolean>(heading, 'heading')
 // $ExpectError
-is<{}>(heading, 'heading')
+is<Record<string, unknown>>(heading, 'heading')
 
-/*=== assignable to boolean ===*/
+/* Should be assignable to boolean. */
 const wasItAHeading: boolean = is<Heading>(heading, 'heading')
 
-/*=== type string test ===*/
+/* Should support string tests. */
 is<Heading>(heading, 'heading')
 is<Heading>(element, 'heading')
 // $ExpectError
@@ -86,7 +84,7 @@ if (is<Element>(element, 'element')) {
   const maybeNotElement: Heading = element
 }
 
-/*=== type predicate function test ===*/
+/* Should support function tests. */
 is(heading, isHeading)
 is(element, isHeading)
 // $ExpectError
@@ -109,7 +107,7 @@ if (is(element, isElement)) {
   const maybeNotElement: Heading = element
 }
 
-/*=== type object test ===*/
+/* Should support object tests. */
 is<Heading>(heading, {type: 'heading', depth: 2})
 is<Heading>(element, {type: 'heading', depth: 2})
 // $ExpectError
@@ -132,12 +130,13 @@ if (is<Element>(element, {type: 'element', tagName: 'section'})) {
   const maybeNotElement: Heading = element
 }
 
-/*=== type array of tests ===*/
+/* Should support array tests. */
 is<Heading | Element | Paragraph>(heading, [
   'heading',
   isElement,
   {type: 'ParagraphNode'}
 ])
+
 if (
   is<Heading | Element | Paragraph>(heading, [
     'heading',
@@ -150,30 +149,38 @@ if (
       heading // $ExpectType Heading
       break
     }
+
     case 'element': {
       heading // $ExpectType Element
       break
     }
+
     case 'ParagraphNode': {
       heading // $ExpectType Paragraph
       break
     }
+
     // $ExpectError
     case 'dne': {
+      break
+    }
+
+    default: {
       break
     }
   }
 }
 
-/*=== usable in unified transform ===*/
+/* Should support being used in a unified transform. */
 unified().use(() => (tree) => {
   if (is<Heading>(tree, 'heading')) {
-    // do something
+    // Do something
   }
+
   return tree
 })
 
-/*=== convert ===*/
+/* Should support `convert`. */
 convert<Heading>('heading')
 // $ExpectError
 convert<Heading>('element')

@@ -46,12 +46,12 @@
     "tape": "^5.0.0",
     "tinyify": "^3.0.0",
     "unified": "^9.0.0",
-    "xo": "^0.34.0"
+    "xo": "^0.35.0"
   },
   "scripts": {
     "format": "remark . -qfo && prettier . -w --loglevel warn && xo --fix",
-    "build-bundle": "browserify . -s unistUtilIs > unist-util-is.js",
-    "build-mangle": "browserify . -s unistUtilIs -p tinyify > unist-util-is.min.js",
+    "build-bundle": "browserify . -s unistUtilIs -o unist-util-is.js",
+    "build-mangle": "browserify . -s unistUtilIs -o unist-util-is.min.js -p tinyify",
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
     "test-coverage": "nyc --reporter lcov tape test.js",
@@ -70,6 +70,7 @@
     "prettier": true,
     "esnext": false,
     "rules": {
+      "@typescript-eslint/no-unused-expressions": "off",
       "eqeqeq": [
         "error",
         "always",
