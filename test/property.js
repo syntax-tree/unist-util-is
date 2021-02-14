@@ -50,9 +50,9 @@ test('unist-util-is properties', function (t) {
           // Filter for JSON objects which unist can work with
           .filter(function (node) {
             return (
-              // json needs to be a plain object
+              // JSON needs to be a plain object
               _.isPlainObject(node) &&
-              // also needs to have some keys with primitive values
+              // Also needs to have some keys with primitive values
               _.some(_.keys(node), function (key) {
                 return !_.isObject(node[key])
               })
@@ -63,7 +63,7 @@ test('unist-util-is properties', function (t) {
             return fc.tuple(
               fc.constant(node),
               fc.subarray(
-                _.keys(node).filter(function (key) {
+                _.filter(_.keys(node), function (key) {
                   return !_.isObject(node[key])
                 }),
                 {minLength: 1}
