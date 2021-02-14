@@ -22,8 +22,10 @@ test('unist-util-is properties', (t) => {
       fc.assert(
         fc.property(
           fc
-            .dictionary(fc.string(), fc.string())
-            .filter((node) => typeof node.type === 'undefined'),
+            .unicodeJsonObject()
+            .filter(
+              (node) => !(isPlainObject(node) && typeof node.type === 'string')
+            ),
           (node) => !is(node)
         )
       ),
