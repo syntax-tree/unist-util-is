@@ -34,11 +34,12 @@
     "convert.d.ts"
   ],
   "types": "index.d.ts",
-  "dependencies": {},
   "devDependencies": {
     "@types/mdast": "^3.0.0",
     "browserify": "^17.0.0",
     "dtslint": "^4.0.0",
+    "fast-check": "^2.0.0",
+    "lodash": "^4.0.0",
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
     "remark-cli": "^9.0.0",
@@ -54,7 +55,7 @@
     "build-mangle": "browserify . -s unistUtilIs -o unist-util-is.min.js -p tinyify",
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
-    "test-coverage": "nyc --reporter lcov tape test.js",
+    "test-coverage": "nyc --reporter lcov tape test",
     "test-types": "dtslint .",
     "test": "npm run format && npm run build && npm run test-coverage && npm run test-types"
   },
