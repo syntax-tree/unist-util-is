@@ -14,7 +14,7 @@ test('unist-util-is properties', (t) => {
           is(node)
         )
       ),
-    'should check if given node (#1)'
+    'should see any object w/ a non-empty `type` as a node'
   )
 
   t.doesNotThrow(
