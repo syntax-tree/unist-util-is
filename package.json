@@ -55,7 +55,7 @@
     "build-mangle": "browserify . -s unistUtilIs -o unist-util-is.min.js -p tinyify",
     "build": "npm run build-bundle && npm run build-mangle",
     "test-api": "node test",
-    "test-coverage": "nyc --reporter lcov tape test.js",
+    "test-coverage": "nyc --reporter lcov tape test",
     "test-types": "dtslint .",
     "test": "npm run format && npm run build && npm run test-coverage && npm run test-types"
   },
