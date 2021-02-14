@@ -1,7 +1,7 @@
 'use strict'
 
 var test = require('tape')
-var is = require('unist-util-is')
+var is = require('..')
 
 test('unist-util-is', function (t) {
   var node = {type: 'strong'}
