@@ -1,9 +1,9 @@
 'use strict'
 
 var test = require('tape')
-var is = require('..')
+var is = require('unist-util-is')
 
-test('unist-util-is examples', function (t) {
+test('unist-util-is', function (t) {
   var node = {type: 'strong'}
   var parent = {type: 'paragraph', children: []}
 
