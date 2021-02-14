@@ -3,7 +3,7 @@
 var test = require('tape')
 var is = require('..')
 
-test('unist-util-is example', function (t) {
+test('unist-util-is examples', function (t) {
   var node = {type: 'strong'}
   var parent = {type: 'paragraph', children: []}
 
