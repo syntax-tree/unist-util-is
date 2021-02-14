@@ -1,2 +1,3 @@
-require("./example")
-require("./property")
+/* eslint-disable import/no-unassigned-import */
+require('./example')
+require('./property')

@@ -46,22 +46,30 @@ test('unist-util-is properties', function (t) {
     fc.assert(
       fc.property(
         fc
-          // generate an object with primitive values
+          // Generate an object with primitive values
           .dictionary(
             fc.string(),
-            fc.oneof(fc.string(), fc.integer(), fc.bigInt(), fc.boolean())
+            fc.oneof(fc.string(), fc.integer(), fc.boolean())
           )
-          // object must have some keys
-          .filter(function (node) { return _.keys(node).length > 1})
-          // return node and a list with a random subset of it's keys
+          // Object must have some keys
+          .filter(function (node) {
+            return _.keys(node).length > 1
+          })
+          // Return node and a list with a random subset of it's keys
           .chain(function (node) {
-            return fc.tuple(fc.constant(node), fc.subarray(_.keys(node), {minLength: 1}))
+            return fc.tuple(
+              fc.constant(node),
+              fc.subarray(_.keys(node), {minLength: 1})
+            )
           }),
         fc.string({minLength: 1}),
         function (nodeAndKeys, type) {
-          var node = nodeAndKeys[0]
+          var nodeProperties = nodeAndKeys[0]
           var keys = nodeAndKeys[1]
-          return is(_.assign(node, {type: type}), _.pick(_.cloneDeep(node), keys))
+
+          var node = _.assign(nodeProperties, {type: type})
+          var subsetOfNode = _.pick(_.cloneDeep(node), keys)
+          return is(node, subsetOfNode)
         }
       )
     )
