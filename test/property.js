@@ -46,20 +46,28 @@ test('unist-util-is properties', function (t) {
     fc.assert(
       fc.property(
         fc
-          // Generate an object with primitive values
-          .dictionary(
-            fc.string(),
-            fc.oneof(fc.string(), fc.integer(), fc.boolean())
-          )
-          // Object must have some keys
+          .unicodeJsonObject()
+          // Filter for JSON objects which unist can work with
           .filter(function (node) {
-            return _.keys(node).length > 1
+            return (
+              // json needs to be a plain object
+              _.isPlainObject(node) &&
+              // also needs to have some keys with primitive values
+              _.some(_.keys(node), function (key) {
+                return !_.isObject(node[key])
+              })
+            )
           })
-          // Return node and a list with a random subset of it's keys
+          // Return node and a list with a random subset of it's primitive value keys
           .chain(function (node) {
             return fc.tuple(
               fc.constant(node),
-              fc.subarray(_.keys(node), {minLength: 1})
+              fc.subarray(
+                _.keys(node).filter(function (key) {
+                  return !_.isObject(node[key])
+                }),
+                {minLength: 1}
+              )
             )
           }),
         fc.string({minLength: 1}),
