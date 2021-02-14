@@ -34,11 +34,12 @@
     "convert.d.ts"
   ],
   "types": "index.d.ts",
-  "dependencies": {},
   "devDependencies": {
     "@types/mdast": "^3.0.0",
     "browserify": "^17.0.0",
     "dtslint": "^4.0.0",
+    "fast-check": "^2.0.0",
+    "lodash": "^4.0.0",
     "nyc": "^15.0.0",
     "prettier": "^2.0.0",
     "remark-cli": "^9.0.0",
