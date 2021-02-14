@@ -52,7 +52,7 @@ test('unist-util-is properties', (t) => {
                 isPlainObject(node) &&
                 Object.keys(node).some((key) => !isObject(node[key]))
             )
-            // Return node and a list with a random subset of it's primitive value keys
+            // Return node and a list with a random subset of its primitive value keys
             .chain((node) =>
               fc.tuple(
                 fc.constant(node),
