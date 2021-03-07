@@ -37,7 +37,12 @@ declare namespace unistUtilIs {
    *
    * @typeParam T type of node that passes test
    */
-  type Test<T extends Node> = TestType<T> | TestObject<T> | TestFunction<T>
+  type Test<T extends Node> =
+    | TestType<T>
+    | TestObject<T>
+    | TestFunction<T>
+    | null
+    | undefined
 }
 
 /**
@@ -57,7 +62,7 @@ declare namespace unistUtilIs {
  */
 declare function unistUtilIs<T extends Node>(
   node: unknown,
-  test: unistUtilIs.Test<T> | Array<unistUtilIs.Test<any>>,
+  test?: unistUtilIs.Test<T> | Array<unistUtilIs.Test<any>>,
   index?: number,
   parent?: Parent,
   context?: any

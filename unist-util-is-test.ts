@@ -1,5 +1,7 @@
 import {Node, Parent} from 'unist'
+
 import {Heading} from 'mdast'
+
 import unified = require('unified')
 import is = require('unist-util-is')
 import convert = require('unist-util-is/convert')
@@ -47,8 +49,6 @@ const maybeElement: Element = element
 is()
 // $ExpectError
 is<Node>()
-// $ExpectError
-is<Node>(heading)
 
 /* Incorrect generic. */
 // $ExpectError
@@ -60,6 +60,11 @@ is<Record<string, unknown>>(heading, 'heading')
 
 /* Should be assignable to boolean. */
 const wasItAHeading: boolean = is<Heading>(heading, 'heading')
+
+/* Test is optional */
+is<Node>(heading)
+is<Node>(heading, null)
+is<Node>(heading, undefined)
 
 /* Should support string tests. */
 is<Heading>(heading, 'heading')
@@ -190,3 +195,5 @@ convert<Element>({type: 'heading', depth: 2})
 convert<Heading>(isHeading)
 // $ExpectError
 convert<Element>(isHeading)
+convert<Node>(null)
+convert<Node>(undefined)
