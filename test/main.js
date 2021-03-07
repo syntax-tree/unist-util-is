@@ -1,14 +1,14 @@
 'use strict'
 
 var test = require('tape')
-var is = require('.')
+var is = require('..')
 
-test('unist-util-is', function(t) {
+test('unist-util-is', function (t) {
   var node = {type: 'strong'}
   var parent = {type: 'paragraph', children: []}
 
   t.throws(
-    function() {
+    function () {
       is(null, false)
     },
     /Expected function, string, or object as test/,
@@ -16,31 +16,31 @@ test('unist-util-is', function(t) {
   )
 
   t.throws(
-    function() {
+    function () {
       is(node, null, -1, parent)
     },
-    /Expected positive finite index or child node/,
+    /Expected positive finite index/,
     'should throw when `index` is invalid (#1)'
   )
 
   t.throws(
-    function() {
+    function () {
       is(node, null, Infinity, parent)
     },
-    /Expected positive finite index or child node/,
+    /Expected positive finite index/,
     'should throw when `index` is invalid (#2)'
   )
 
   t.throws(
-    function() {
+    function () {
       is(node, null, false, parent)
     },
-    /Expected positive finite index or child node/,
+    /Expected positive finite index/,
     'should throw when `index` is invalid (#3)'
   )
 
   t.throws(
-    function() {
+    function () {
       is(node, null, 0, {})
     },
     /Expected parent node/,
@@ -48,7 +48,7 @@ test('unist-util-is', function(t) {
   )
 
   t.throws(
-    function() {
+    function () {
       is(node, null, 0, {type: 'paragraph'})
     },
     /Expected parent node/,
@@ -56,7 +56,7 @@ test('unist-util-is', function(t) {
   )
 
   t.throws(
-    function() {
+    function () {
       is(node, null, 0)
     },
     /Expected both parent and index/,
@@ -64,7 +64,7 @@ test('unist-util-is', function(t) {
   )
 
   t.throws(
-    function() {
+    function () {
       is(node, null, null, parent)
     },
     /Expected both parent and index/,
@@ -83,28 +83,28 @@ test('unist-util-is', function(t) {
   t.ok(is(parent, {type: 'paragraph'}), 'should match partially (#3)')
   t.notok(is(node, {type: 'paragraph'}), 'should match partially (#4)')
 
-  t.test('should accept a test', function(st) {
+  t.test('should accept a test', function (t) {
     function test(node, n) {
       return n === 5
     }
 
     t.notok(is(node, test))
     t.notok(is(node, test, 0, parent))
-    st.ok(is(node, test, 5, parent))
+    t.ok(is(node, test, 5, parent))
 
-    st.end()
+    t.end()
   })
 
-  t.test('should invoke test', function(st) {
+  t.test('should invoke test', function (t) {
     var context = {foo: 'bar'}
 
-    st.plan(4)
+    t.plan(4)
 
     function test(a, b, c) {
-      st.equal(this, context)
-      st.equal(a, node)
-      st.equal(b, 5)
-      st.equal(c, parent)
+      t.equal(this, context)
+      t.equal(a, node)
+      t.equal(b, 5)
+      t.equal(c, parent)
     }
 
     is(node, test, 5, parent, context)
@@ -113,18 +113,18 @@ test('unist-util-is', function(t) {
   t.ok(is(node, ['strong', 'emphasis']), 'should match arrays (#1)')
   t.notok(is(node, ['b', 'i']), 'should match arrays (#2)')
 
-  t.test('should match arrays (#3)', function(st) {
+  t.test('should match arrays (#3)', function (t) {
     var context = {foo: 'bar'}
 
-    st.plan(5)
+    t.plan(5)
 
-    st.ok(is(node, [test, 'strong'], 5, parent, context))
+    t.ok(is(node, [test, 'strong'], 5, parent, context))
 
     function test(a, b, c) {
-      st.equal(this, context)
-      st.equal(a, node)
-      st.equal(b, 5)
-      st.equal(c, parent)
+      t.equal(this, context)
+      t.equal(a, node)
+      t.equal(b, 5)
+      t.equal(c, parent)
       return false
     }
   })
