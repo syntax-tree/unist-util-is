@@ -53,7 +53,7 @@ is(node, test, 5, parent) // => true
 
 *   `node` ([`Node`][node]) — Node to check.
 *   `test` ([`Function`][test], `string`, `Object`, or `Array.<Test>`, optional)
-    —  When not given, checks if `node` is a [`Node`][node].
+    —  When nullish, checks if `node` is a [`Node`][node].
     When `string`, works like passing `node => node.type === test`.
     When `array`, checks if any one of the subtests pass.
     When `object`, checks that all keys in `test` are in `node`,

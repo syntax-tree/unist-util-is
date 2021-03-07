@@ -49,7 +49,7 @@ declare namespace unistUtilIs {
  * Unist utility to check if a node passes a test.
  *
  * @param node Node to check.
- * @param test When not given, checks if `node` is a `Node`.
+ * @param test When nullish, checks if `node` is a `Node`.
  * When `string`, works like passing `function (node) {return node.type === test}`.
  * When `function` checks if function passed the node is true.
  * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
