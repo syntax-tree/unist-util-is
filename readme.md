@@ -12,6 +12,9 @@
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -21,7 +24,7 @@ npm install unist-util-is
 ## Use
 
 ```js
-var is = require('unist-util-is')
+import {is} from 'unist-util-is'
 
 var node = {type: 'strong'}
 var parent = {type: 'paragraph', children: [node]}
@@ -46,6 +49,9 @@ is(node, test, 5, parent) // => true
 ```
 
 ## API
+
+This package exports the following identifiers: `is`, `convert`.
+There is no default export.
 
 ### `is(node[, test[, index, parent[, context]]])`
 
@@ -83,7 +89,7 @@ is(node, test, 5, parent) // => true
 
 `boolean?` — Whether `node` matches.
 
-### `is.convert(test)`
+### `convert(test)`
 
 Create a test function from `test`, that can later be called with a `node`,
 `index`, and `parent`.
@@ -93,13 +99,11 @@ where something else passes an is-compatible test.
 The created function is slightly faster because it expects valid input only.
 Therefore, passing invalid input, yields unexpected results.
 
-Can also be accessed with `require('unist-util-is/convert')`.
-
 For example:
 
 ```js
-var u = require('unist-builder')
-var convert = require('unist-util-is/convert')
+import u from 'unist-builder'
+import {convert} from 'unist-util-is'
 
 var test = convert('leaf')
 

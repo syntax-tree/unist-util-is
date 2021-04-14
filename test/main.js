@@ -1,7 +1,5 @@
-'use strict'
-
-var test = require('tape')
-var is = require('..')
+import test from 'tape'
+import {is} from '../index.js'
 
 test('unist-util-is', function (t) {
   var node = {type: 'strong'}
@@ -25,7 +23,7 @@ test('unist-util-is', function (t) {
 
   t.throws(
     function () {
-      is(node, null, Infinity, parent)
+      is(node, null, Number.POSITIVE_INFINITY, parent)
     },
     /Expected positive finite index/,
     'should throw when `index` is invalid (#2)'

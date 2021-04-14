@@ -1,9 +1,9 @@
-'use strict'
+import test from 'tape'
+import fc from 'fast-check'
+import lodash from 'lodash'
+import {is} from '../index.js'
 
-const test = require('tape')
-const fc = require('fast-check')
-const {isObject, isPlainObject, pick, cloneDeep} = require('lodash')
-const is = require('..')
+var {isObject, isPlainObject, pick, cloneDeep} = lodash
 
 test('unist-util-is properties', (t) => {
   t.plan(4)
@@ -69,7 +69,7 @@ test('unist-util-is properties', (t) => {
             const nodeProperties = nodeAndKeys[0]
             const keys = nodeAndKeys[1]
 
-            const node = {...nodeProperties, type: type}
+            const node = {...nodeProperties, type}
             const subsetOfNode = pick(cloneDeep(node), keys)
             return is(node, subsetOfNode)
           }
