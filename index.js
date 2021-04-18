@@ -46,110 +46,110 @@
  * @returns {node is Y}
  */
 
-/**
- * Check if a node passes a test.
- * When a `parent` node is known the `index` of node should also be given.
- *
- * @type {(
- *   (<T extends Node>(node: unknown, test?: null|undefined, index?: number, parent?: Parent, context?: unknown) => node is Node) &
- *   (<T extends Node>(node: unknown, test: T['type']|Partial<T>|TestFunctionPredicate<T>|Array.<T['type']|Partial<T>|TestFunctionPredicate<T>>, index?: number, parent?: Parent, context?: unknown) => node is T) &
- *   ((node?: unknown, test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>, index?: number, parent?: Parent, context?: unknown) => boolean)
- * )}
- */
-// prettier-ignore
-export var is = (
+export var is =
   /**
    * Check if a node passes a test.
    * When a `parent` node is known the `index` of node should also be given.
    *
-   * @param {unknown} [node] Node to check
-   * @param {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} [test]
-   * When nullish, checks if `node` is a `Node`.
-   * When `string`, works like passing `function (node) {return node.type === test}`.
-   * When `function` checks if function passed the node is true.
-   * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
-   * When `array`, checks any one of the subtests pass.
-   * @param {number} [index] Position of `node` in `parent`
-   * @param {Parent} [parent] Parent of `node`
-   * @param {unknown} [context] Context object to invoke `test` with
-   * @returns {boolean} Whether test passed and `node` is a `Node` (object with `type` set to non-empty `string`).
+   * @type {(
+   *   (<T extends Node>(node: unknown, test?: null|undefined, index?: number, parent?: Parent, context?: unknown) => node is Node) &
+   *   (<T extends Node>(node: unknown, test: T['type']|Partial<T>|TestFunctionPredicate<T>|Array.<T['type']|Partial<T>|TestFunctionPredicate<T>>, index?: number, parent?: Parent, context?: unknown) => node is T) &
+   *   ((node?: unknown, test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>, index?: number, parent?: Parent, context?: unknown) => boolean)
+   * )}
    */
-  // eslint-disable-next-line max-params
-  function is(node, test, index, parent, context) {
-    var check = convert(test)
+  (
+    /**
+     * Check if a node passes a test.
+     * When a `parent` node is known the `index` of node should also be given.
+     *
+     * @param {unknown} [node] Node to check
+     * @param {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} [test]
+     * When nullish, checks if `node` is a `Node`.
+     * When `string`, works like passing `function (node) {return node.type === test}`.
+     * When `function` checks if function passed the node is true.
+     * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
+     * When `array`, checks any one of the subtests pass.
+     * @param {number} [index] Position of `node` in `parent`
+     * @param {Parent} [parent] Parent of `node`
+     * @param {unknown} [context] Context object to invoke `test` with
+     * @returns {boolean} Whether test passed and `node` is a `Node` (object with `type` set to non-empty `string`).
+     */
+    // eslint-disable-next-line max-params
+    function is(node, test, index, parent, context) {
+      var check = convert(test)
 
-    if (
-      index !== undefined &&
-      index !== null &&
-      (typeof index !== 'number' ||
-        index < 0 ||
-        index === Number.POSITIVE_INFINITY)
-    ) {
-      throw new Error('Expected positive finite index')
+      if (
+        index !== undefined &&
+        index !== null &&
+        (typeof index !== 'number' ||
+          index < 0 ||
+          index === Number.POSITIVE_INFINITY)
+      ) {
+        throw new Error('Expected positive finite index')
+      }
+
+      if (
+        parent !== undefined &&
+        parent !== null &&
+        (!is(parent) || !parent.children)
+      ) {
+        throw new Error('Expected parent node')
+      }
+
+      if (
+        (parent === undefined || parent === null) !==
+        (index === undefined || index === null)
+      ) {
+        throw new Error('Expected both parent and index')
+      }
+
+      // @ts-ignore Looks like a node.
+      return node && node.type && typeof node.type === 'string'
+        ? Boolean(check.call(context, node, index, parent))
+        : false
     }
+  )
 
-    if (
-      parent !== undefined &&
-      parent !== null &&
-      (!is(parent) || !parent.children)
-    ) {
-      throw new Error('Expected parent node')
-    }
-
-    if (
-      (parent === undefined || parent === null) !==
-      (index === undefined || index === null)
-    ) {
-      throw new Error('Expected both parent and index')
-    }
-
-    // @ts-ignore Looks like a node.
-    return node && node.type && typeof node.type === 'string'
-      ? Boolean(check.call(context, node, index, parent))
-      : false
-  }
-)
-
-/**
- * @type {(
- *   (<T extends Node>(test?: null|undefined) => AssertPredicate<Node>) &
- *   (<T extends Node>(test: T['type']|Partial<T>|TestFunctionPredicate<T>) => AssertPredicate<T>) &
- *   ((test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>) => AssertAnything)
- * )}
- */
-// prettier-ignore
-export var convert = (
+export var convert =
   /**
-   * Generate an assertion from a check.
-   * @param {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} [test]
-   * When nullish, checks if `node` is a `Node`.
-   * When `string`, works like passing `function (node) {return node.type === test}`.
-   * When `function` checks if function passed the node is true.
-   * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
-   * When `array`, checks any one of the subtests pass.
-   * @returns {AssertAnything}
+   * @type {(
+   *   (<T extends Node>(test?: null|undefined) => AssertPredicate<Node>) &
+   *   (<T extends Node>(test: T['type']|Partial<T>|TestFunctionPredicate<T>) => AssertPredicate<T>) &
+   *   ((test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>) => AssertAnything)
+   * )}
    */
-  function (test) {
-    if (test === undefined || test === null) {
-      return ok
-    }
+  (
+    /**
+     * Generate an assertion from a check.
+     * @param {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} [test]
+     * When nullish, checks if `node` is a `Node`.
+     * When `string`, works like passing `function (node) {return node.type === test}`.
+     * When `function` checks if function passed the node is true.
+     * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
+     * When `array`, checks any one of the subtests pass.
+     * @returns {AssertAnything}
+     */
+    function (test) {
+      if (test === undefined || test === null) {
+        return ok
+      }
 
-    if (typeof test === 'string') {
-      return typeFactory(test)
-    }
+      if (typeof test === 'string') {
+        return typeFactory(test)
+      }
 
-    if (typeof test === 'object') {
-      // @ts-ignore looks like a list of tests / partial test object.
-      return 'length' in test ? anyFactory(test) : propsFactory(test)
-    }
+      if (typeof test === 'object') {
+        // @ts-ignore looks like a list of tests / partial test object.
+        return 'length' in test ? anyFactory(test) : propsFactory(test)
+      }
 
-    if (typeof test === 'function') {
-      return castFactory(test)
-    }
+      if (typeof test === 'function') {
+        return castFactory(test)
+      }
 
-    throw new Error('Expected function, string, or object as test')
-  }
-)
+      throw new Error('Expected function, string, or object as test')
+    }
+  )
 /**
  * @param {Array.<Type|Props|TestFunctionAnything>} tests
  * @returns {AssertAnything}
