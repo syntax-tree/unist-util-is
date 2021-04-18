@@ -53,9 +53,13 @@ expectError(is<Record<string, unknown>>(heading, 'heading'))
 expectType<boolean>(is<Heading>(heading, 'heading'))
 
 /* Test is optional */
-expectType<boolean>(is<Node>(heading))
-expectType<boolean>(is<Node>(heading, null))
-expectType<boolean>(is<Node>(heading, undefined))
+expectType<boolean>(is(heading))
+expectType<boolean>(is(heading, null))
+expectType<boolean>(is(heading, undefined))
+/* But not with a type predicate */
+expectError(is<Node>(heading)) // But not with a type predicate
+expectError(is<Node>(heading, null))
+expectError(is<Node>(heading, undefined))
 
 /* Should support string tests. */
 expectType<boolean>(is<Heading>(heading, 'heading'))
@@ -182,5 +186,7 @@ expectError(
 )
 convert<Heading>(isHeading)
 expectError(convert<Element>(isHeading))
-convert<Node>(null)
-convert<Node>(undefined)
+convert()
+convert(null)
+convert(undefined)
+expectError(convert<Element>())

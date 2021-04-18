@@ -52,7 +52,6 @@ export var is =
    * When a `parent` node is known the `index` of node should also be given.
    *
    * @type {(
-   *   (<T extends Node>(node: unknown, test?: null|undefined, index?: number, parent?: Parent, context?: unknown) => node is Node) &
    *   (<T extends Node>(node: unknown, test: T['type']|Partial<T>|TestFunctionPredicate<T>|Array.<T['type']|Partial<T>|TestFunctionPredicate<T>>, index?: number, parent?: Parent, context?: unknown) => node is T) &
    *   ((node?: unknown, test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>, index?: number, parent?: Parent, context?: unknown) => boolean)
    * )}
@@ -113,7 +112,6 @@ export var is =
 export var convert =
   /**
    * @type {(
-   *   (<T extends Node>(test?: null|undefined) => AssertPredicate<Node>) &
    *   (<T extends Node>(test: T['type']|Partial<T>|TestFunctionPredicate<T>) => AssertPredicate<T>) &
    *   ((test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>) => AssertAnything)
    * )}
