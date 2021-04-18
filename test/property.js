@@ -21,11 +21,10 @@ test('unist-util-is properties', (t) => {
     () =>
       fc.assert(
         fc.property(
-          fc
-            .unicodeJsonObject()
-            .filter(
-              (node) => !(isPlainObject(node) && typeof node.type === 'string')
-            ),
+          fc.unicodeJsonObject().filter(
+            // @ts-ignore Looks like a node.
+            (node) => !(isPlainObject(node) && typeof node.type === 'string')
+          ),
           (node) => !is(node)
         )
       ),
@@ -65,7 +64,10 @@ test('unist-util-is properties', (t) => {
               )
             ),
           fc.string({minLength: 1}),
-          (nodeAndKeys, type) => {
+          (
+            /** @type {[Object.<string, unknown>, Array.<string>]} */ nodeAndKeys,
+            /** @type {string} */ type
+          ) => {
             const nodeProperties = nodeAndKeys[0]
             const keys = nodeAndKeys[1]
 
