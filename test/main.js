@@ -1,12 +1,18 @@
 import test from 'tape'
 import {is} from '../index.js'
 
+/**
+ * @typedef {import('unist').Node} Node
+ * @typedef {import('unist').Parent} Parent
+ */
+
 test('unist-util-is', function (t) {
   var node = {type: 'strong'}
   var parent = {type: 'paragraph', children: []}
 
   t.throws(
     function () {
+      // @ts-ignore runtime.
       is(null, false)
     },
     /Expected function, string, or object as test/,
@@ -31,6 +37,7 @@ test('unist-util-is', function (t) {
 
   t.throws(
     function () {
+      // @ts-ignore runtime.
       is(node, null, false, parent)
     },
     /Expected positive finite index/,
@@ -39,6 +46,7 @@ test('unist-util-is', function (t) {
 
   t.throws(
     function () {
+      // @ts-ignore runtime.
       is(node, null, 0, {})
     },
     /Expected parent node/,
@@ -47,6 +55,7 @@ test('unist-util-is', function (t) {
 
   t.throws(
     function () {
+      // @ts-ignore runtime.
       is(node, null, 0, {type: 'paragraph'})
     },
     /Expected parent node/,
@@ -68,7 +77,6 @@ test('unist-util-is', function (t) {
     /Expected both parent and index/,
     'should throw `parent` xor `index` are given (#2)'
   )
-
   t.notok(is(), 'should not fail without node')
   t.ok(is(node), 'should check if given a node (#1)')
   t.notok(is({children: []}, null), 'should check if given a node (#2)')
@@ -82,7 +90,12 @@ test('unist-util-is', function (t) {
   t.notok(is(node, {type: 'paragraph'}), 'should match partially (#4)')
 
   t.test('should accept a test', function (t) {
-    function test(node, n) {
+    /**
+     * @param {unknown} _
+     * @param {number} n
+     * @returns {boolean}
+     */
+    function test(_, n) {
       return n === 5
     }
 
@@ -98,6 +111,12 @@ test('unist-util-is', function (t) {
 
     t.plan(4)
 
+    /**
+     * @this {context}
+     * @param {Node} a
+     * @param {number} b
+     * @param {Parent} c
+     */
     function test(a, b, c) {
       t.equal(this, context)
       t.equal(a, node)
@@ -118,6 +137,13 @@ test('unist-util-is', function (t) {
 
     t.ok(is(node, [test, 'strong'], 5, parent, context))
 
+    /**
+     * @this {context}
+     * @param {Node} a
+     * @param {number} b
+     * @param {Parent} c
+     * @returns {boolean}
+     */
     function test(a, b, c) {
       t.equal(this, context)
       t.equal(a, node)

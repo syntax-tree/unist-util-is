@@ -1,6 +1,5 @@
 {
-  "files": ["index.js"],
-  "include": ["*.js"],
+  "include": ["*.js", "test/**/*.js"],
   "compilerOptions": {
     "target": "ES2020",
     "lib": ["ES2020"],
@@ -8,16 +7,9 @@
     "moduleResolution": "node",
     "allowJs": true,
     "checkJs": true,
-    "noEmit": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "noImplicitAny": false,
-    "noImplicitThis": false,
-    "strictNullChecks": false,
-    "strictFunctionTypes": false,
-    "baseUrl": ".",
-    "paths": {
-      "unist-util-is": ["./index.d.ts"]
-    }
+    "skipLibCheck": true
   }
 }

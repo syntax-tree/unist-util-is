@@ -1,76 +1,159 @@
-// Assert if `test` passes for `node`.
-// When a `parent` node is known the `index` of node should also be given.
-// eslint-disable-next-line max-params
-export function is(node, test, index, parent, context) {
-  var check = convert(test)
+/**
+ * @typedef {import('unist').Node} Node
+ * @typedef {import('unist').Parent} Parent
+ *
+ * @typedef {string} Type
+ * @typedef {Object<string, unknown>} Props
+ */
 
-  if (
-    index !== undefined &&
-    index !== null &&
-    (typeof index !== 'number' ||
-      index < 0 ||
-      index === Number.POSITIVE_INFINITY)
-  ) {
-    throw new Error('Expected positive finite index')
-  }
+/**
+ * Check if a node passes a test
+ *
+ * @callback TestFunctionAnything
+ * @param {Node} node
+ * @param {number} [index]
+ * @param {Parent} [parent]
+ * @returns {boolean|void}
+ */
 
-  if (
-    parent !== undefined &&
-    parent !== null &&
-    (!is(parent) || !parent.children)
-  ) {
-    throw new Error('Expected parent node')
-  }
+/**
+ * Check if a node passes a certain node test
+ *
+ * @template {Node} X
+ * @callback TestFunctionPredicate
+ * @param {Node} node
+ * @param {number} [index]
+ * @param {Parent} [parent]
+ * @returns {node is X}
+ */
 
-  if (
-    (parent === undefined || parent === null) !==
-    (index === undefined || index === null)
-  ) {
-    throw new Error('Expected both parent and index')
-  }
+/**
+ * @callback AssertAnything
+ * @param {unknown} [node]
+ * @param {number} [index]
+ * @param {Parent} [parent]
+ * @returns {boolean}
+ */
 
-  return node && node.type && typeof node.type === 'string'
-    ? Boolean(check.call(context, node, index, parent))
-    : false
-}
+/**
+ * Check if a node passes a certain node test
+ *
+ * @template {Node} Y
+ * @callback AssertPredicate
+ * @param {unknown} [node]
+ * @param {number} [index]
+ * @param {Parent} [parent]
+ * @returns {node is Y}
+ */
 
-export function convert(test) {
-  if (test === undefined || test === null) {
-    return ok
-  }
+export var is =
+  /**
+   * Check if a node passes a test.
+   * When a `parent` node is known the `index` of node should also be given.
+   *
+   * @type {(
+   *   (<T extends Node>(node: unknown, test: T['type']|Partial<T>|TestFunctionPredicate<T>|Array.<T['type']|Partial<T>|TestFunctionPredicate<T>>, index?: number, parent?: Parent, context?: unknown) => node is T) &
+   *   ((node?: unknown, test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>, index?: number, parent?: Parent, context?: unknown) => boolean)
+   * )}
+   */
+  (
+    /**
+     * Check if a node passes a test.
+     * When a `parent` node is known the `index` of node should also be given.
+     *
+     * @param {unknown} [node] Node to check
+     * @param {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} [test]
+     * When nullish, checks if `node` is a `Node`.
+     * When `string`, works like passing `function (node) {return node.type === test}`.
+     * When `function` checks if function passed the node is true.
+     * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
+     * When `array`, checks any one of the subtests pass.
+     * @param {number} [index] Position of `node` in `parent`
+     * @param {Parent} [parent] Parent of `node`
+     * @param {unknown} [context] Context object to invoke `test` with
+     * @returns {boolean} Whether test passed and `node` is a `Node` (object with `type` set to non-empty `string`).
+     */
+    // eslint-disable-next-line max-params
+    function is(node, test, index, parent, context) {
+      var check = convert(test)
 
-  if (typeof test === 'string') {
-    return typeFactory(test)
-  }
+      if (
+        index !== undefined &&
+        index !== null &&
+        (typeof index !== 'number' ||
+          index < 0 ||
+          index === Number.POSITIVE_INFINITY)
+      ) {
+        throw new Error('Expected positive finite index')
+      }
 
-  if (typeof test === 'object') {
-    return 'length' in test ? anyFactory(test) : allFactory(test)
-  }
+      if (
+        parent !== undefined &&
+        parent !== null &&
+        (!is(parent) || !parent.children)
+      ) {
+        throw new Error('Expected parent node')
+      }
 
-  if (typeof test === 'function') {
-    return test
-  }
+      if (
+        (parent === undefined || parent === null) !==
+        (index === undefined || index === null)
+      ) {
+        throw new Error('Expected both parent and index')
+      }
 
-  throw new Error('Expected function, string, or object as test')
-}
-
-// Utility to assert each property in `test` is represented in `node`, and each
-// values are strictly equal.
-function allFactory(test) {
-  return all
-
-  function all(node) {
-    var key
-
-    for (key in test) {
-      if (node[key] !== test[key]) return false
+      // @ts-ignore Looks like a node.
+      return node && node.type && typeof node.type === 'string'
+        ? Boolean(check.call(context, node, index, parent))
+        : false
     }
+  )
 
-    return true
-  }
-}
+export var convert =
+  /**
+   * @type {(
+   *   (<T extends Node>(test: T['type']|Partial<T>|TestFunctionPredicate<T>) => AssertPredicate<T>) &
+   *   ((test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>) => AssertAnything)
+   * )}
+   */
+  (
+    /**
+     * Generate an assertion from a check.
+     * @param {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} [test]
+     * When nullish, checks if `node` is a `Node`.
+     * When `string`, works like passing `function (node) {return node.type === test}`.
+     * When `function` checks if function passed the node is true.
+     * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
+     * When `array`, checks any one of the subtests pass.
+     * @returns {AssertAnything}
+     */
+    function (test) {
+      if (test === undefined || test === null) {
+        return ok
+      }
 
+      if (typeof test === 'string') {
+        return typeFactory(test)
+      }
+
+      if (typeof test === 'object') {
+        // @ts-ignore looks like a list of tests / partial test object.
+        return 'length' in test ? anyFactory(test) : propsFactory(test)
+      }
+
+      if (typeof test === 'function') {
+        return castFactory(test)
+      }
+
+      throw new Error('Expected function, string, or object as test')
+    }
+  )
+/**
+ * @param {Array.<Type|Props|TestFunctionAnything>} tests
+ * @returns {AssertAnything}
+ */
 function anyFactory(tests) {
+  /** @type {Array.<AssertAnything>} */
   var checks = []
   var index = -1
 
@@ -78,28 +161,82 @@ function anyFactory(tests) {
     checks[index] = convert(tests[index])
   }
 
-  return any
+  return castFactory(any)
 
+  /**
+   * @this {unknown}
+   * @param {unknown[]} parameters
+   * @returns {boolean}
+   */
   function any(...parameters) {
     var index = -1
 
     while (++index < checks.length) {
-      if (checks[index].call(this, ...parameters)) {
-        return true
-      }
+      if (checks[index].call(this, ...parameters)) return true
     }
-
-    return false
   }
 }
 
-// Utility to convert a string into a function which checks a given node’s type
-// for said string.
-function typeFactory(test) {
-  return type
+/**
+ * Utility to assert each property in `test` is represented in `node`, and each
+ * values are strictly equal.
+ *
+ * @param {Props} check
+ * @returns {AssertAnything}
+ */
+function propsFactory(check) {
+  return castFactory(all)
 
+  /**
+   * @param {Node} node
+   * @returns {boolean}
+   */
+  function all(node) {
+    /** @type {string} */
+    var key
+
+    for (key in check) {
+      if (node[key] !== check[key]) return
+    }
+
+    return true
+  }
+}
+
+/**
+ * Utility to convert a string into a function which checks a given node’s type
+ * for said string.
+ *
+ * @param {Type} check
+ * @returns {AssertAnything}
+ */
+function typeFactory(check) {
+  return castFactory(type)
+
+  /**
+   * @param {Node} node
+   */
   function type(node) {
-    return Boolean(node && node.type === test)
+    return node && node.type === check
+  }
+}
+
+/**
+ * Utility to convert a string into a function which checks a given node’s type
+ * for said string.
+ * @param {TestFunctionAnything} check
+ * @returns {AssertAnything}
+ */
+function castFactory(check) {
+  return assertion
+
+  /**
+   * @this {unknown}
+   * @param {Array.<unknown>} parameters
+   * @returns {boolean}
+   */
+  function assertion(...parameters) {
+    return Boolean(check.call(this, ...parameters))
   }
 }
 
