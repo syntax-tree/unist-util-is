@@ -4,6 +4,8 @@
  *
  * @typedef {string} Type
  * @typedef {Object<string, unknown>} Props
+ *
+ * @typedef {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} Test
  */
 
 /**
@@ -53,7 +55,7 @@ export var is =
    *
    * @type {(
    *   (<T extends Node>(node: unknown, test: T['type']|Partial<T>|TestFunctionPredicate<T>|Array.<T['type']|Partial<T>|TestFunctionPredicate<T>>, index?: number, parent?: Parent, context?: unknown) => node is T) &
-   *   ((node?: unknown, test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>, index?: number, parent?: Parent, context?: unknown) => boolean)
+   *   ((node?: unknown, test?: Test, index?: number, parent?: Parent, context?: unknown) => boolean)
    * )}
    */
   (
@@ -62,7 +64,7 @@ export var is =
      * When a `parent` node is known the `index` of node should also be given.
      *
      * @param {unknown} [node] Node to check
-     * @param {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} [test]
+     * @param {Test} [test]
      * When nullish, checks if `node` is a `Node`.
      * When `string`, works like passing `function (node) {return node.type === test}`.
      * When `function` checks if function passed the node is true.
@@ -113,13 +115,13 @@ export var convert =
   /**
    * @type {(
    *   (<T extends Node>(test: T['type']|Partial<T>|TestFunctionPredicate<T>) => AssertPredicate<T>) &
-   *   ((test?: null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>) => AssertAnything)
+   *   ((test?: Test) => AssertAnything)
    * )}
    */
   (
     /**
      * Generate an assertion from a check.
-     * @param {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} [test]
+     * @param {Test} [test]
      * When nullish, checks if `node` is a `Node`.
      * When `string`, works like passing `function (node) {return node.type === test}`.
      * When `function` checks if function passed the node is true.
