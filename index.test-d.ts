@@ -99,30 +99,18 @@ if (is(element, isElement)) {
 }
 
 /* Should support object tests. */
-expectType<boolean>(
-  is<Heading>(heading, {type: 'heading', depth: 2})
-)
-expectType<boolean>(
-  is<Heading>(element, {type: 'heading', depth: 2})
-)
-expectError(
-  is<Heading>(heading, {type: 'heading', depth: '2'})
-)
+expectType<boolean>(is<Heading>(heading, {type: 'heading', depth: 2}))
+expectType<boolean>(is<Heading>(element, {type: 'heading', depth: 2}))
+expectError(is<Heading>(heading, {type: 'heading', depth: '2'}))
 
 if (is<Heading>(heading, {type: 'heading', depth: 2})) {
   expectType<Heading>(heading)
   expectNotType<Element>(heading)
 }
 
-expectType<boolean>(
-  is<Element>(element, {type: 'element', tagName: 'section'})
-)
-expectType<boolean>(
-  is<Element>(heading, {type: 'element', tagName: 'section'})
-)
-expectError(
-  is<Element>(element, {type: 'element', tagName: true})
-)
+expectType<boolean>(is<Element>(element, {type: 'element', tagName: 'section'}))
+expectType<boolean>(is<Element>(heading, {type: 'element', tagName: 'section'}))
+expectError(is<Element>(element, {type: 'element', tagName: true}))
 
 if (is<Element>(element, {type: 'element', tagName: 'section'})) {
   expectType<Element>(element)
@@ -181,9 +169,7 @@ unified().use(() => (tree) => {
 convert<Heading>('heading')
 expectError(convert<Heading>('element'))
 convert<Heading>({type: 'heading', depth: 2})
-expectError(
-  convert<Element>({type: 'heading', depth: 2})
-)
+expectError(convert<Element>({type: 'heading', depth: 2}))
 convert<Heading>(isHeading)
 expectError(convert<Element>(isHeading))
 convert()
