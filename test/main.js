@@ -12,7 +12,7 @@ test('unist-util-is', (t) => {
 
   t.throws(
     () => {
-      // @ts-ignore runtime.
+      // @ts-expect-error runtime.
       is(null, false)
     },
     /Expected function, string, or object as test/,
@@ -37,7 +37,7 @@ test('unist-util-is', (t) => {
 
   t.throws(
     () => {
-      // @ts-ignore runtime.
+      // @ts-expect-error runtime.
       is(node, null, false, parent)
     },
     /Expected positive finite index/,
@@ -46,7 +46,7 @@ test('unist-util-is', (t) => {
 
   t.throws(
     () => {
-      // @ts-ignore runtime.
+      // @ts-expect-error runtime.
       is(node, null, 0, {})
     },
     /Expected parent node/,
@@ -55,7 +55,7 @@ test('unist-util-is', (t) => {
 
   t.throws(
     () => {
-      // @ts-ignore runtime.
+      // @ts-expect-error runtime.
       is(node, null, 0, {type: 'paragraph'})
     },
     /Expected parent node/,
@@ -92,7 +92,7 @@ test('unist-util-is', (t) => {
   t.test('should accept a test', (t) => {
     /**
      * @param {unknown} _
-     * @param {number} n
+     * @param {number|null|undefined} n
      * @returns {boolean}
      */
     function test(_, n) {
@@ -114,8 +114,8 @@ test('unist-util-is', (t) => {
     /**
      * @this {context}
      * @param {Node} a
-     * @param {number} b
-     * @param {Parent} c
+     * @param {number|null|undefined} b
+     * @param {Parent|null|undefined} c
      */
     function test(a, b, c) {
       t.equal(this, context)
@@ -140,8 +140,8 @@ test('unist-util-is', (t) => {
     /**
      * @this {context}
      * @param {Node} a
-     * @param {number} b
-     * @param {Parent} c
+     * @param {number|null|undefined} b
+     * @param {Parent|null|undefined} c
      * @returns {boolean}
      */
     function test(a, b, c) {

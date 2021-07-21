@@ -22,7 +22,7 @@ test('unist-util-is properties', (t) => {
       fc.assert(
         fc.property(
           fc.unicodeJsonObject().filter(
-            // @ts-ignore Looks like a node.
+            // @ts-expect-error Looks like a node.
             (node) => !(isPlainObject(node) && typeof node.type === 'string')
           ),
           (node) => !is(node)
@@ -45,12 +45,14 @@ test('unist-util-is properties', (t) => {
     () =>
       fc.assert(
         fc.property(
+          // @ts-expect-error: hush
           fc
             .unicodeJsonObject()
             // Filter for JSON objects which unist can work with
             .filter(
               (node) =>
                 isPlainObject(node) &&
+                // @ts-expect-error: hush
                 Object.keys(node).some((key) => !isObject(node[key]))
             )
             // Return node and a list with a random subset of its primitive value keys
@@ -58,6 +60,7 @@ test('unist-util-is properties', (t) => {
               fc.tuple(
                 fc.constant(node),
                 fc.subarray(
+                  // @ts-expect-error: hush
                   Object.keys(node).filter((key) => !isObject(node[key])),
                   {minLength: 1}
                 )

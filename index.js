@@ -13,8 +13,8 @@
  *
  * @callback TestFunctionAnything
  * @param {Node} node
- * @param {number} [index]
- * @param {Parent} [parent]
+ * @param {number|null|undefined} [index]
+ * @param {Parent|null|undefined} [parent]
  * @returns {boolean|void}
  */
 
@@ -24,16 +24,16 @@
  * @template {Node} X
  * @callback TestFunctionPredicate
  * @param {Node} node
- * @param {number} [index]
- * @param {Parent} [parent]
+ * @param {number|null|undefined} [index]
+ * @param {Parent|null|undefined} [parent]
  * @returns {node is X}
  */
 
 /**
  * @callback AssertAnything
  * @param {unknown} [node]
- * @param {number} [index]
- * @param {Parent} [parent]
+ * @param {number|null|undefined} [index]
+ * @param {Parent|null|undefined} [parent]
  * @returns {boolean}
  */
 
@@ -43,8 +43,8 @@
  * @template {Node} Y
  * @callback AssertPredicate
  * @param {unknown} [node]
- * @param {number} [index]
- * @param {Parent} [parent]
+ * @param {number|null|undefined} [index]
+ * @param {Parent|null|undefined} [parent]
  * @returns {node is Y}
  */
 
@@ -54,8 +54,8 @@ export const is =
    * When a `parent` node is known the `index` of node should also be given.
    *
    * @type {(
-   *   (<T extends Node>(node: unknown, test: T['type']|Partial<T>|TestFunctionPredicate<T>|Array.<T['type']|Partial<T>|TestFunctionPredicate<T>>, index?: number, parent?: Parent, context?: unknown) => node is T) &
-   *   ((node?: unknown, test?: Test, index?: number, parent?: Parent, context?: unknown) => boolean)
+   *   (<T extends Node>(node: unknown, test: T['type']|Partial<T>|TestFunctionPredicate<T>|Array.<T['type']|Partial<T>|TestFunctionPredicate<T>>, index?: number|null|undefined, parent?: Parent|null|undefined, context?: unknown) => node is T) &
+   *   ((node?: unknown, test?: Test, index?: number|null|undefined, parent?: Parent|null|undefined, context?: unknown) => boolean)
    * )}
    */
   (
@@ -70,8 +70,8 @@ export const is =
      * When `function` checks if function passed the node is true.
      * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
      * When `array`, checks any one of the subtests pass.
-     * @param {number} [index] Position of `node` in `parent`
-     * @param {Parent} [parent] Parent of `node`
+     * @param {number|null|undefined} [index] Position of `node` in `parent`
+     * @param {Parent|null|undefined} [parent] Parent of `node`
      * @param {unknown} [context] Context object to invoke `test` with
      * @returns {boolean} Whether test passed and `node` is a `Node` (object with `type` set to non-empty `string`).
      */
@@ -104,7 +104,7 @@ export const is =
         throw new Error('Expected both parent and index')
       }
 
-      // @ts-ignore Looks like a node.
+      // @ts-expect-error Looks like a node.
       return node && node.type && typeof node.type === 'string'
         ? Boolean(check.call(context, node, index, parent))
         : false
@@ -175,6 +175,8 @@ function anyFactory(tests) {
     while (++index < checks.length) {
       if (checks[index].call(this, ...parameters)) return true
     }
+
+    return false
   }
 }
 
@@ -197,7 +199,8 @@ function propsFactory(check) {
     let key
 
     for (key in check) {
-      if (node[key] !== check[key]) return
+      // @ts-expect-error: hush, it sure works as an index.
+      if (node[key] !== check[key]) return false
     }
 
     return true
@@ -237,6 +240,7 @@ function castFactory(check) {
    * @returns {boolean}
    */
   function assertion(...parameters) {
+    // @ts-expect-error: spreading is fine.
     return Boolean(check.call(this, ...parameters))
   }
 }
