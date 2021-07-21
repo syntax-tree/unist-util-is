@@ -1,5 +1,10 @@
 import {Node, Parent} from 'unist'
-import {expectType, expectNotType, expectError} from 'tsd'
+import {
+  expectType,
+  expectAssignable,
+  expectNotAssignable,
+  expectError
+} from 'tsd'
 import {Heading} from 'mdast'
 import * as unified from 'unified'
 import {is, convert} from './index.js'
@@ -17,13 +22,13 @@ interface Paragraph extends Parent {
   type: 'ParagraphNode'
 }
 
-const heading: Node = {
+const heading = {
   type: 'heading',
   depth: 2,
   children: []
 }
 
-const element: Node = {
+const element = {
   type: 'element',
   tagName: 'section',
   properties: {},
@@ -67,8 +72,8 @@ expectType<boolean>(is<Heading>(element, 'heading'))
 expectError(is<Heading>(heading, 'element'))
 
 if (is<Heading>(heading, 'heading')) {
-  expectType<Heading>(heading)
-  expectNotType<Element>(heading)
+  expectAssignable<Heading>(heading)
+  expectNotAssignable<Element>(heading)
 }
 
 expectType<boolean>(is<Element>(element, 'element'))
@@ -76,8 +81,8 @@ expectType<boolean>(is<Element>(heading, 'element'))
 expectError(is<Element>(element, 'heading'))
 
 if (is<Element>(element, 'element')) {
-  expectType<Element>(element)
-  expectNotType<Heading>(element)
+  expectAssignable<Element>(element)
+  expectNotAssignable<Heading>(element)
 }
 
 /* Should support function tests. */
@@ -86,8 +91,8 @@ expectType<boolean>(is(element, isHeading))
 expectError(is<Heading>(heading, isElement))
 
 if (is(heading, isHeading)) {
-  expectType<Heading>(heading)
-  expectNotType<Element>(heading)
+  expectAssignable<Heading>(heading)
+  expectNotAssignable<Element>(heading)
 }
 
 expectType<boolean>(is(element, isElement))
@@ -95,7 +100,7 @@ expectType<boolean>(is(heading, isElement))
 expectError(is<Element>(element, isHeading))
 
 if (is(element, isElement)) {
-  expectType<Element>(element)
+  expectAssignable<Element>(element)
 }
 
 /* Should support object tests. */
@@ -104,8 +109,8 @@ expectType<boolean>(is<Heading>(element, {type: 'heading', depth: 2}))
 expectError(is<Heading>(heading, {type: 'heading', depth: '2'}))
 
 if (is<Heading>(heading, {type: 'heading', depth: 2})) {
-  expectType<Heading>(heading)
-  expectNotType<Element>(heading)
+  expectAssignable<Heading>(heading)
+  expectNotAssignable<Element>(heading)
 }
 
 expectType<boolean>(is<Element>(element, {type: 'element', tagName: 'section'}))
@@ -113,8 +118,8 @@ expectType<boolean>(is<Element>(heading, {type: 'element', tagName: 'section'}))
 expectError(is<Element>(element, {type: 'element', tagName: true}))
 
 if (is<Element>(element, {type: 'element', tagName: 'section'})) {
-  expectType<Element>(element)
-  expectNotType<Heading>(element)
+  expectAssignable<Element>(element)
+  expectNotAssignable<Heading>(element)
 }
 
 /* Should support array tests. */
@@ -135,17 +140,17 @@ if (
 ) {
   switch (heading.type) {
     case 'heading': {
-      expectType<Heading>(heading)
+      expectAssignable<Heading>(heading)
       break
     }
 
     case 'element': {
-      expectType<Element>(heading)
+      expectAssignable<Element>(heading)
       break
     }
 
     case 'ParagraphNode': {
-      expectType<Paragraph>(heading)
+      expectAssignable<Paragraph>(heading)
       break
     }
 
