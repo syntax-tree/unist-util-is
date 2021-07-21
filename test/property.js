@@ -3,7 +3,7 @@ import fc from 'fast-check'
 import lodash from 'lodash'
 import {is} from '../index.js'
 
-var {isObject, isPlainObject, pick, cloneDeep} = lodash
+const {isObject, isPlainObject, pick, cloneDeep} = lodash
 
 test('unist-util-is properties', (t) => {
   t.plan(4)

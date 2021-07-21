@@ -26,8 +26,8 @@ npm install unist-util-is
 ```js
 import {is} from 'unist-util-is'
 
-var node = {type: 'strong'}
-var parent = {type: 'paragraph', children: [node]}
+const node = {type: 'strong'}
+const parent = {type: 'paragraph', children: [node]}
 
 function test(node, n) {
   return n === 5

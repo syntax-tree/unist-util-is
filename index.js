@@ -48,7 +48,7 @@
  * @returns {node is Y}
  */
 
-export var is =
+export const is =
   /**
    * Check if a node passes a test.
    * When a `parent` node is known the `index` of node should also be given.
@@ -77,7 +77,7 @@ export var is =
      */
     // eslint-disable-next-line max-params
     function is(node, test, index, parent, context) {
-      var check = convert(test)
+      const check = convert(test)
 
       if (
         index !== undefined &&
@@ -111,7 +111,7 @@ export var is =
     }
   )
 
-export var convert =
+export const convert =
   /**
    * @type {(
    *   (<T extends Node>(test: T['type']|Partial<T>|TestFunctionPredicate<T>) => AssertPredicate<T>) &
@@ -139,8 +139,7 @@ export var convert =
       }
 
       if (typeof test === 'object') {
-        // @ts-ignore looks like a list of tests / partial test object.
-        return 'length' in test ? anyFactory(test) : propsFactory(test)
+        return Array.isArray(test) ? anyFactory(test) : propsFactory(test)
       }
 
       if (typeof test === 'function') {
@@ -156,8 +155,8 @@ export var convert =
  */
 function anyFactory(tests) {
   /** @type {Array.<AssertAnything>} */
-  var checks = []
-  var index = -1
+  const checks = []
+  let index = -1
 
   while (++index < tests.length) {
     checks[index] = convert(tests[index])
@@ -171,7 +170,7 @@ function anyFactory(tests) {
    * @returns {boolean}
    */
   function any(...parameters) {
-    var index = -1
+    let index = -1
 
     while (++index < checks.length) {
       if (checks[index].call(this, ...parameters)) return true
@@ -195,7 +194,7 @@ function propsFactory(check) {
    */
   function all(node) {
     /** @type {string} */
-    var key
+    let key
 
     for (key in check) {
       if (node[key] !== check[key]) return

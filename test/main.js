@@ -6,12 +6,12 @@ import {is} from '../index.js'
  * @typedef {import('unist').Parent} Parent
  */
 
-test('unist-util-is', function (t) {
-  var node = {type: 'strong'}
-  var parent = {type: 'paragraph', children: []}
+test('unist-util-is', (t) => {
+  const node = {type: 'strong'}
+  const parent = {type: 'paragraph', children: []}
 
   t.throws(
-    function () {
+    () => {
       // @ts-ignore runtime.
       is(null, false)
     },
@@ -20,7 +20,7 @@ test('unist-util-is', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       is(node, null, -1, parent)
     },
     /Expected positive finite index/,
@@ -28,7 +28,7 @@ test('unist-util-is', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       is(node, null, Number.POSITIVE_INFINITY, parent)
     },
     /Expected positive finite index/,
@@ -36,7 +36,7 @@ test('unist-util-is', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       // @ts-ignore runtime.
       is(node, null, false, parent)
     },
@@ -45,7 +45,7 @@ test('unist-util-is', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       // @ts-ignore runtime.
       is(node, null, 0, {})
     },
@@ -54,7 +54,7 @@ test('unist-util-is', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       // @ts-ignore runtime.
       is(node, null, 0, {type: 'paragraph'})
     },
@@ -63,7 +63,7 @@ test('unist-util-is', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       is(node, null, 0)
     },
     /Expected both parent and index/,
@@ -71,7 +71,7 @@ test('unist-util-is', function (t) {
   )
 
   t.throws(
-    function () {
+    () => {
       is(node, null, null, parent)
     },
     /Expected both parent and index/,
@@ -89,7 +89,7 @@ test('unist-util-is', function (t) {
   t.ok(is(parent, {type: 'paragraph'}), 'should match partially (#3)')
   t.notok(is(node, {type: 'paragraph'}), 'should match partially (#4)')
 
-  t.test('should accept a test', function (t) {
+  t.test('should accept a test', (t) => {
     /**
      * @param {unknown} _
      * @param {number} n
@@ -106,8 +106,8 @@ test('unist-util-is', function (t) {
     t.end()
   })
 
-  t.test('should invoke test', function (t) {
-    var context = {foo: 'bar'}
+  t.test('should invoke test', (t) => {
+    const context = {foo: 'bar'}
 
     t.plan(4)
 
@@ -130,8 +130,8 @@ test('unist-util-is', function (t) {
   t.ok(is(node, ['strong', 'emphasis']), 'should match arrays (#1)')
   t.notok(is(node, ['b', 'i']), 'should match arrays (#2)')
 
-  t.test('should match arrays (#3)', function (t) {
-    var context = {foo: 'bar'}
+  t.test('should match arrays (#3)', (t) => {
+    const context = {foo: 'bar'}
 
     t.plan(5)
 
