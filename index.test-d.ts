@@ -6,7 +6,7 @@ import {
   expectError
 } from 'tsd'
 import {Heading} from 'mdast'
-import * as unified from 'unified'
+import {unified} from 'unified'
 import {is, convert} from './index.js'
 
 /* Setup. */
