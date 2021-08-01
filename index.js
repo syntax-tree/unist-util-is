@@ -48,32 +48,45 @@
  * @returns {node is Y}
  */
 
+/**
+ * Check if a node passes a test.
+ * When a `parent` node is known the `index` of node should also be given.
+ *
+ * @param node
+ *   Node to check, can be anything.
+ * @param test
+ *   *   When nullish, checks if `node` is a `Node`.
+ *   *   When `string`, works like passing `(node) => node.type === test`.
+ *   *   When `function` checks if function passed the node is true.
+ *   *   When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
+ *   *   When `array`, checks any one of the subtests pass.
+ * @param index
+ *   Position of `node` in `parent`, must be a number if `parent` is also given.
+ * @param parent
+ *   Parent of `node`, must be given if `index` is also given.
+ * @param context
+ *   Context object to invoke `test` with, optional
+ * @returns
+ *   Whether test passed and `node` is a `Node` (object with `type` set to
+ *   non-empty `string`).
+ */
 export const is =
   /**
-   * Check if a node passes a test.
-   * When a `parent` node is known the `index` of node should also be given.
-   *
    * @type {(
-   *   (<T extends Node>(node: unknown, test: T['type']|Partial<T>|TestFunctionPredicate<T>|Array.<T['type']|Partial<T>|TestFunctionPredicate<T>>, index?: number|null|undefined, parent?: Parent|null|undefined, context?: unknown) => node is T) &
-   *   ((node?: unknown, test?: Test, index?: number|null|undefined, parent?: Parent|null|undefined, context?: unknown) => boolean)
+   *   (<ExplicitNode extends Node>(node: unknown, test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>|Array.<ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>>, index: number, parent: Parent, context?: unknown) => node is ExplicitNode) &
+   *   (<ExplicitNode extends Node>(node: unknown, test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>|Array.<ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>>, index?: null|undefined, parent?: null|undefined, context?: unknown) => node is ExplicitNode) &
+   *   ((node: unknown, test: Test, index: number, parent: Parent, context?: unknown) => boolean) &
+   *   ((node?: unknown, test?: Test, index?: null|undefined, parent?: null|undefined, context?: unknown) => boolean)
    * )}
    */
   (
     /**
-     * Check if a node passes a test.
-     * When a `parent` node is known the `index` of node should also be given.
-     *
-     * @param {unknown} [node] Node to check
+     * @param {unknown} [node]
      * @param {Test} [test]
-     * When nullish, checks if `node` is a `Node`.
-     * When `string`, works like passing `function (node) {return node.type === test}`.
-     * When `function` checks if function passed the node is true.
-     * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
-     * When `array`, checks any one of the subtests pass.
-     * @param {number|null|undefined} [index] Position of `node` in `parent`
-     * @param {Parent|null|undefined} [parent] Parent of `node`
-     * @param {unknown} [context] Context object to invoke `test` with
-     * @returns {boolean} Whether test passed and `node` is a `Node` (object with `type` set to non-empty `string`).
+     * @param {number|null|undefined} [index]
+     * @param {Parent|null|undefined} [parent]
+     * @param {unknown} [context]
+     * @returns {boolean}
      */
     // eslint-disable-next-line max-params
     function is(node, test, index, parent, context) {
@@ -114,7 +127,7 @@ export const is =
 export const convert =
   /**
    * @type {(
-   *   (<T extends Node>(test: T['type']|Partial<T>|TestFunctionPredicate<T>) => AssertPredicate<T>) &
+   *   (<ExplicitNode extends Node>(test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>) => AssertPredicate<ExplicitNode>) &
    *   ((test?: Test) => AssertAnything)
    * )}
    */

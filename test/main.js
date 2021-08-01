@@ -64,6 +64,7 @@ test('unist-util-is', (t) => {
 
   t.throws(
     () => {
+      // @ts-expect-error: both `index` and `parent` are needed.
       is(node, null, 0)
     },
     /Expected both parent and index/,
@@ -72,6 +73,7 @@ test('unist-util-is', (t) => {
 
   t.throws(
     () => {
+      // @ts-expect-error: both `index` and `parent` are needed.
       is(node, null, null, parent)
     },
     /Expected both parent and index/,
