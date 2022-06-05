@@ -3,9 +3,9 @@
  * @typedef {import('unist').Parent} Parent
  *
  * @typedef {string} Type
- * @typedef {Object<string, unknown>} Props
+ * @typedef {Record<string, unknown>} Props
  *
- * @typedef {null|undefined|Type|Props|TestFunctionAnything|Array.<Type|Props|TestFunctionAnything>} Test
+ * @typedef {null|undefined|Type|Props|TestFunctionAnything|Array<Type|Props|TestFunctionAnything>} Test
  */
 
 /**
@@ -73,8 +73,8 @@
 export const is =
   /**
    * @type {(
-   *   (<ExplicitNode extends Node>(node: unknown, test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>|Array.<ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>>, index: number, parent: Parent, context?: unknown) => node is ExplicitNode) &
-   *   (<ExplicitNode extends Node>(node: unknown, test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>|Array.<ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>>, index?: null|undefined, parent?: null|undefined, context?: unknown) => node is ExplicitNode) &
+   *   (<ExplicitNode extends Node>(node: unknown, test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>|Array<ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>>, index: number, parent: Parent, context?: unknown) => node is ExplicitNode) &
+   *   (<ExplicitNode extends Node>(node: unknown, test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>|Array<ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>>, index?: null|undefined, parent?: null|undefined, context?: unknown) => node is ExplicitNode) &
    *   ((node: unknown, test: Test, index: number, parent: Parent, context?: unknown) => boolean) &
    *   ((node?: unknown, test?: Test, index?: null|undefined, parent?: null|undefined, context?: unknown) => boolean)
    * )}
@@ -163,11 +163,11 @@ export const convert =
     }
   )
 /**
- * @param {Array.<Type|Props|TestFunctionAnything>} tests
+ * @param {Array<Type|Props|TestFunctionAnything>} tests
  * @returns {AssertAnything}
  */
 function anyFactory(tests) {
-  /** @type {Array.<AssertAnything>} */
+  /** @type {Array<AssertAnything>} */
   const checks = []
   let index = -1
 
@@ -179,7 +179,7 @@ function anyFactory(tests) {
 
   /**
    * @this {unknown}
-   * @param {unknown[]} parameters
+   * @param {Array<unknown>} parameters
    * @returns {boolean}
    */
   function any(...parameters) {
@@ -249,7 +249,7 @@ function castFactory(check) {
 
   /**
    * @this {unknown}
-   * @param {Array.<unknown>} parameters
+   * @param {Array<unknown>} parameters
    * @returns {boolean}
    */
   function assertion(...parameters) {

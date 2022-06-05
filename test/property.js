@@ -75,7 +75,7 @@ test('unist-util-is properties', (t) => {
           // @ts-expect-error: fine.
           fc.string({minLength: 1}),
           (
-            /** @type {[Object.<string, unknown>, Array.<string>]} */ nodeAndKeys,
+            /** @type {[Record<string, unknown>, Array<string>]} */ nodeAndKeys,
             /** @type {string} */ type
           ) => {
             const nodeProperties = nodeAndKeys[0]

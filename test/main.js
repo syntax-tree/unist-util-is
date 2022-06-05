@@ -1,10 +1,10 @@
-import test from 'tape'
-import {is} from '../index.js'
-
 /**
  * @typedef {import('unist').Node} Node
  * @typedef {import('unist').Parent} Parent
  */
+
+import test from 'tape'
+import {is} from '../index.js'
 
 test('unist-util-is', (t) => {
   const node = {type: 'strong'}

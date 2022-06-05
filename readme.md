@@ -58,7 +58,7 @@ There is no default export.
 ###### Parameters
 
 *   `node` ([`Node`][node]) — Node to check.
-*   `test` ([`Function`][test], `string`, `Object`, or `Array.<Test>`, optional)
+*   `test` ([`Function`][test], `string`, `Object`, or `Array<Test>`, optional)
     —  When nullish, checks if `node` is a [`Node`][node].
     When `string`, works like passing `node => node.type === test`.
     When `array`, checks if any one of the subtests pass.
