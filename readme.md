@@ -106,7 +106,7 @@ When a `parent` node is given the `index` of node should also be given.
 
 *   `node` ([`Node`][node]) — node to check
 *   `test` ([`Function`][test], `string`, `Object`, or `Array<Test>`, optional)
-    Check.
+    — check:
     *   when nullish, checks if `node` is a [`Node`][node]
     *   when `string`, works like passing `node => node.type === test`
     *   when `array`, checks if any one of the subtests pass
