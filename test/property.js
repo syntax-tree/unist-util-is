@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('unist').Node} Node
+ */
+
 import test from 'tape'
 import fc from 'fast-check'
 import lodash from 'lodash'
@@ -10,6 +14,7 @@ test('unist-util-is properties', (t) => {
   t.doesNotThrow(
     () =>
       fc.assert(
+        // @ts-expect-error: fine.
         fc.property(fc.record({type: fc.string({minLength: 1})}), (node) =>
           is(node)
         )
@@ -21,10 +26,11 @@ test('unist-util-is properties', (t) => {
     () =>
       fc.assert(
         fc.property(
-          fc.unicodeJsonObject().filter(
+          fc.unicodeJsonValue().filter(
             // @ts-expect-error Looks like a node.
             (node) => !(isPlainObject(node) && typeof node.type === 'string')
           ),
+          // @ts-expect-error: fine.
           (node) => !is(node)
         )
       ),
@@ -34,9 +40,10 @@ test('unist-util-is properties', (t) => {
   t.doesNotThrow(
     () =>
       fc.assert(
-        fc.property(fc.record({type: fc.string({minLength: 1})}), (node) =>
+        // @ts-expect-error: fine.
+        fc.property(fc.record({type: fc.string({minLength: 1})}), node => {
           is(node, node.type)
-        )
+        })
       ),
     'should match types'
   )
@@ -45,9 +52,8 @@ test('unist-util-is properties', (t) => {
     () =>
       fc.assert(
         fc.property(
-          // @ts-expect-error: hush
           fc
-            .unicodeJsonObject()
+            .unicodeJsonValue()
             // Filter for JSON objects which unist can work with
             .filter(
               (node) =>
@@ -66,6 +72,7 @@ test('unist-util-is properties', (t) => {
                 )
               )
             ),
+          // @ts-expect-error: fine.
           fc.string({minLength: 1}),
           (
             /** @type {[Object.<string, unknown>, Array.<string>]} */ nodeAndKeys,
