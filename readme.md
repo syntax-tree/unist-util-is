@@ -8,17 +8,61 @@
 [![Backers][backers-badge]][collective]
 [![Chat][chat-badge]][chat]
 
-[**unist**][unist] utility to check if a node passes a test.
+[unist][] utility to check if nodes pass a test.
+
+## Contents
+
+*   [What is this?](#what-is-this)
+*   [When should I use this?](#when-should-i-use-this)
+*   [Install](#install)
+*   [Use](#use)
+*   [API](#api)
+    *   [`is(node[, test[, index, parent[, context]]])`](#isnode-test-index-parent-context)
+    *   [`convert(test)`](#converttest)
+*   [Examples](#examples)
+    *   [Example of `convert`](#example-of-convert)
+*   [Types](#types)
+*   [Compatibility](#compatibility)
+*   [Related](#related)
+*   [Contribute](#contribute)
+*   [License](#license)
+
+## What is this?
+
+This package is a small utility that checks that a node is a certain node.
+
+## When should I use this?
+
+Use this small utility if you find yourself repeating code for checking what
+nodes are.
+
+A similar package, [`hast-util-is-element`][hast-util-is-element], works on hast
+elements.
+
+For more advanced tests, [`unist-util-select`][unist-util-select] can be used
+to match against CSS selectors.
 
 ## Install
 
-This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
-Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
-
-[npm][]:
+This package is [ESM only][esm].
+In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
 
 ```sh
 npm install unist-util-is
+```
+
+In Deno with [`esm.sh`][esmsh]:
+
+```js
+import {is} from "https://esm.sh/unist-util-is@5"
+```
+
+In browsers with [`esm.sh`][esmsh]:
+
+```html
+<script type="module">
+  import {is} from "https://esm.sh/unist-util-is@5?bundle"
+</script>
 ```
 
 ## Use
@@ -28,10 +72,6 @@ import {is} from 'unist-util-is'
 
 const node = {type: 'strong'}
 const parent = {type: 'paragraph', children: [node]}
-
-function test(node, n) {
-  return n === 5
-}
 
 is() // => false
 is({children: []}) // => false
@@ -46,75 +86,89 @@ is(parent, {type: 'strong'}) // => false
 is(node, test) // => false
 is(node, test, 4, parent) // => false
 is(node, test, 5, parent) // => true
+
+function test(node, n) {
+  return n === 5
+}
 ```
 
 ## API
 
-This package exports the following identifiers: `is`, `convert`.
+This package exports the identifiers `is` and `convert`.
 There is no default export.
 
 ### `is(node[, test[, index, parent[, context]]])`
 
+Check if `node` passes a test.
+When a `parent` node is given the `index` of node should also be given.
+
 ###### Parameters
 
-*   `node` ([`Node`][node]) — Node to check.
+*   `node` ([`Node`][node]) — node to check
 *   `test` ([`Function`][test], `string`, `Object`, or `Array<Test>`, optional)
-    —  When nullish, checks if `node` is a [`Node`][node].
-    When `string`, works like passing `node => node.type === test`.
-    When `array`, checks if any one of the subtests pass.
-    When `object`, checks that all keys in `test` are in `node`,
-    and that they have strictly equal values
-*   `index` (`number`, optional) — [Index][] of `node` in `parent`
-*   `parent` ([`Node`][node], optional) — [Parent][] of `node`
-*   `context` (`*`, optional) — Context object to invoke `test` with
+    Check.
+    *   when nullish, checks if `node` is a [`Node`][node]
+    *   when `string`, works like passing `node => node.type === test`
+    *   when `array`, checks if any one of the subtests pass
+    *   when `object`, checks that all fields in `test` are in `node` and that
+        they have strictly equal values
+    *   when `function` checks if function passed the node is true
+*   `index` (`number`, optional) — position of `node` in `parent`.
+*   `parent` ([`Node`][node], optional) — parent of `node`
+*   `context` (`*`, optional) — context object to call `test` with
 
 ###### Returns
 
-`boolean` — Whether `test` passed *and* `node` is a [`Node`][node] (object with
-`type` set to a non-empty `string`).
+Whether `test` passed *and* `node` is a [`Node`][node] (`boolean`).
 
-#### `function test(node[, index, parent])`
+#### `test(node[, index, parent])`
+
+Arbitrary function to define whether a node passes.
 
 ###### Parameters
 
-*   `node` ([`Node`][node]) — Node to check
-*   `index` (`number?`) — [Index][] of `node` in `parent`
-*   `parent` ([`Node?`][node]) — [Parent][] of `node`
-
-###### Context
-
-`*` — The to `is` given `context`.
+*   `this` (`*`) — the to `is` given `context`.
+*   `node` ([`Node`][node]) — node to check
+*   `index` (`number?`) — [index][] of `node` in `parent`
+*   `parent` ([`Node?`][node]) — [parent][] of `node`
 
 ###### Returns
 
-`boolean?` — Whether `node` matches.
+Whether `node` matches (`boolean?`).
 
 ### `convert(test)`
 
-Create a test function from `test`, that can later be called with a `node`,
+Create a test function from `test` that can later be called with a `node`,
 `index`, and `parent`.
 Useful if you’re going to test many nodes, for example when creating a utility
 where something else passes an is-compatible test.
 
-The created function is slightly faster because it expects valid input only.
-Therefore, passing invalid input, yields unexpected results.
+The created function is slightly faster that using `is` because it expects valid
+input only.
+Therefore, passing invalid input yields unexpected results.
 
-For example:
+###### Returns
+
+Check function that can be called as `check(node, index, parent)`.
+
+## Examples
+
+### Example of `convert`
 
 ```js
-import u from 'unist-builder'
+import {u} from 'unist-builder'
 import {convert} from 'unist-util-is'
 
-var test = convert('leaf')
+const test = convert('leaf')
 
-var tree = u('tree', [
+const tree = u('tree', [
   u('node', [u('leaf', '1')]),
   u('leaf', '2'),
   u('node', [u('leaf', '3'), u('leaf', '4')]),
   u('leaf', '5')
 ])
 
-var leafs = tree.children.filter((child, index) => test(child, index, tree))
+const leafs = tree.children.filter((child, index) => test(child, index, tree))
 
 console.log(leafs)
 ```
@@ -125,27 +179,50 @@ Yields:
 [{type: 'leaf', value: '2'}, {type: 'leaf', value: '5'}]
 ```
 
+## Types
+
+This package is fully typed with [TypeScript][].
+It exports the additional types:
+
+*   `Test`
+    — models any arbitrary test that can be given
+*   `TestFunctionAnything`
+    — models any test function
+*   `TestFunctionPredicate<Kind>` (where `Kind` extends `Node`)
+    — models a test function for `Kind`
+*   `AssertAnything`
+    — models a check function as returned by `convert`
+*   `AssertPredicate<Kind>` (where `Kind` extends `Node`)
+    — models a check function for `Kind` as returned by `convert`
+
+## Compatibility
+
+Projects maintained by the unified collective are compatible with all maintained
+versions of Node.js.
+As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+Our projects sometimes work with older versions, but this is not guaranteed.
+
 ## Related
 
 *   [`unist-util-find-after`](https://github.com/syntax-tree/unist-util-find-after)
-    — Find a node after another node
+    — find a node after another node
 *   [`unist-util-find-before`](https://github.com/syntax-tree/unist-util-find-before)
-    — Find a node before another node
+    — find a node before another node
 *   [`unist-util-find-all-after`](https://github.com/syntax-tree/unist-util-find-all-after)
-    — Find all nodes after another node
+    — find all nodes after another node
 *   [`unist-util-find-all-before`](https://github.com/syntax-tree/unist-util-find-all-before)
-    — Find all nodes before another node
+    — find all nodes before another node
 *   [`unist-util-find-all-between`](https://github.com/mrzmmr/unist-util-find-all-between)
-    — Find all nodes between two nodes
+    — find all nodes between two nodes
 *   [`unist-util-filter`](https://github.com/syntax-tree/unist-util-filter)
-    — Create a new tree with nodes that pass a check
+    — create a new tree with nodes that pass a check
 *   [`unist-util-remove`](https://github.com/syntax-tree/unist-util-remove)
-    — Remove nodes from tree
+    — remove nodes from tree
 
 ## Contribute
 
-See [`contributing.md` in `syntax-tree/.github`][contributing] for ways to get
-started.
+See [`contributing.md`][contributing] in [`syntax-tree/.github`][health] for
+ways to get started.
 See [`support.md`][support] for ways to get help.
 
 This project has a [code of conduct][coc].
@@ -186,15 +263,23 @@ abide by its terms.
 
 [npm]: https://docs.npmjs.com/cli/install
 
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
+
+[typescript]: https://www.typescriptlang.org
+
 [license]: license
 
 [author]: https://wooorm.com
 
-[contributing]: https://github.com/syntax-tree/.github/blob/HEAD/contributing.md
+[health]: https://github.com/syntax-tree/.github
 
-[support]: https://github.com/syntax-tree/.github/blob/HEAD/support.md
+[contributing]: https://github.com/syntax-tree/.github/blob/main/contributing.md
 
-[coc]: https://github.com/syntax-tree/.github/blob/HEAD/code-of-conduct.md
+[support]: https://github.com/syntax-tree/.github/blob/main/support.md
+
+[coc]: https://github.com/syntax-tree/.github/blob/main/code-of-conduct.md
 
 [unist]: https://github.com/syntax-tree/unist
 
@@ -204,4 +289,8 @@ abide by its terms.
 
 [index]: https://github.com/syntax-tree/unist#index
 
-[test]: #function-testnode-index-parent
+[hast-util-is-element]: https://github.com/syntax-tree/hast-util-is-element
+
+[unist-util-select]: https://github.com/syntax-tree/unist-util-select
+
+[test]: #testnode-index-parent
