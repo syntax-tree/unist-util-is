@@ -108,7 +108,7 @@ test('unist-util-is', (t) => {
     t.end()
   })
 
-  t.test('should invoke test', (t) => {
+  t.test('should call test', (t) => {
     const context = {foo: 'bar'}
 
     t.plan(4)

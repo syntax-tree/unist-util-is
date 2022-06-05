@@ -41,7 +41,7 @@ test('unist-util-is properties', (t) => {
     () =>
       fc.assert(
         // @ts-expect-error: fine.
-        fc.property(fc.record({type: fc.string({minLength: 1})}), node => {
+        fc.property(fc.record({type: fc.string({minLength: 1})}), (node) => {
           is(node, node.type)
         })
       ),

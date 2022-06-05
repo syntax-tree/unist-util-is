@@ -1,71 +1,83 @@
 /**
  * @typedef {import('unist').Node} Node
  * @typedef {import('unist').Parent} Parent
- *
  * @typedef {string} Type
  * @typedef {Record<string, unknown>} Props
- *
  * @typedef {null|undefined|Type|Props|TestFunctionAnything|Array<Type|Props|TestFunctionAnything>} Test
- */
-
-/**
- * Check if a node passes a test
  *
  * @callback TestFunctionAnything
+ *   Arbitrary function to define whether a node passes.
+ * @param {unknown} this
+ *   The to `is` given `context`
  * @param {Node} node
+ *   Node to check.
  * @param {number|null|undefined} [index]
+ *   Index of `node` in `parent`.
  * @param {Parent|null|undefined} [parent]
+ *   Parent of `node`.
  * @returns {boolean|void}
- */
-
-/**
- * Check if a node passes a certain node test
+ *   Whether `node` matches.
  *
- * @template {Node} X
- * @callback TestFunctionPredicate
- * @param {Node} node
- * @param {number|null|undefined} [index]
- * @param {Parent|null|undefined} [parent]
- * @returns {node is X}
- */
-
-/**
  * @callback AssertAnything
+ *   Check if a node is an element and passes a certain node test.
  * @param {unknown} [node]
+ *   Thing to check and check that it’s a node.
  * @param {number|null|undefined} [index]
+ *   Index of `node` in `parent`.
  * @param {Parent|null|undefined} [parent]
+ *   Parent of `node`.
  * @returns {boolean}
+ *   Whether `node` matches.
  */
 
 /**
- * Check if a node passes a certain node test
- *
- * @template {Node} Y
- * @callback AssertPredicate
- * @param {unknown} [node]
+ * @template {Node} Kind
+ * @callback TestFunctionPredicate
+ *   Arbitrary function to define whether a node passes, using a TypeScript type
+ *   predicate.
+ * @param {Node} node
+ *   Node to check.
  * @param {number|null|undefined} [index]
+ *   Index of `node` in `parent`.
  * @param {Parent|null|undefined} [parent]
- * @returns {node is Y}
+ *   Parent of `node`.
+ * @returns {node is Kind}
+ *   Whether `node` matches.
  */
 
 /**
- * Check if a node passes a test.
- * When a `parent` node is known the `index` of node should also be given.
+ * @template {Node} Kind
+ * @callback AssertPredicate
+ *   Check if a node is an element and passes a certain node test, using a
+ *   TypeScript type predicate.
+ * @param {unknown} [node]
+ *   Thing to check and check that it’s a node.
+ * @param {number|null|undefined} [index]
+ *   Index of `node` in `parent`.
+ * @param {Parent|null|undefined} [parent]
+ *   Parent of `node`.
+ * @returns {node is Kind}
+ *   Whether `node` matches.
+ */
+
+/**
+ * Check if `node` passes a test.
+ * When a `parent` node is given the `index` of node should also be given.
  *
  * @param node
  *   Node to check, can be anything.
  * @param test
- *   *   When nullish, checks if `node` is a `Node`.
- *   *   When `string`, works like passing `(node) => node.type === test`.
- *   *   When `function` checks if function passed the node is true.
- *   *   When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
- *   *   When `array`, checks any one of the subtests pass.
+ *   *   when nullish, checks if `node` is a `Node`.
+ *   *   when `string`, works like passing `(node) => node.type === test`.
+ *   *   when `array`, checks any one of the subtests pass.
+ *   *   when `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
+ *   *   when `function` checks if function passed the node is true.
  * @param index
  *   Position of `node` in `parent`, must be a number if `parent` is also given.
  * @param parent
  *   Parent of `node`, must be given if `index` is also given.
  * @param context
- *   Context object to invoke `test` with, optional
+ *   Context object to call `test` with
  * @returns
  *   Whether test passed and `node` is a `Node` (object with `type` set to
  *   non-empty `string`).
@@ -73,8 +85,8 @@
 export const is =
   /**
    * @type {(
-   *   (<ExplicitNode extends Node>(node: unknown, test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>|Array<ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>>, index: number, parent: Parent, context?: unknown) => node is ExplicitNode) &
-   *   (<ExplicitNode extends Node>(node: unknown, test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>|Array<ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>>, index?: null|undefined, parent?: null|undefined, context?: unknown) => node is ExplicitNode) &
+   *   (<Kind extends Node>(node: unknown, test: Kind['type']|Partial<Kind>|TestFunctionPredicate<Kind>|Array<Kind['type']|Partial<Kind>|TestFunctionPredicate<Kind>>, index: number, parent: Parent, context?: unknown) => node is Kind) &
+   *   (<Kind extends Node>(node: unknown, test: Kind['type']|Partial<Kind>|TestFunctionPredicate<Kind>|Array<Kind['type']|Partial<Kind>|TestFunctionPredicate<Kind>>, index?: null|undefined, parent?: null|undefined, context?: unknown) => node is Kind) &
    *   ((node: unknown, test: Test, index: number, parent: Parent, context?: unknown) => boolean) &
    *   ((node?: unknown, test?: Test, index?: null|undefined, parent?: null|undefined, context?: unknown) => boolean)
    * )}
@@ -124,22 +136,35 @@ export const is =
     }
   )
 
+/**
+ * Create a test function from `test` that can later be called with a `node`,
+ * `index`, and `parent`.
+ * Useful if you’re going to test many nodes, for example when creating a
+ * utility where something else passes an is-compatible test.
+ *
+ * The created function is slightly faster that using `is` because it expects
+ * valid input only.
+ * Therefore, passing invalid input yields unexpected results.
+ *
+ * @param test
+ *   *   when nullish, checks if `node` is a `Node`.
+ *   *   when `string`, works like passing `(node) => node.type === test`.
+ *   *   when `array`, checks any one of the subtests pass.
+ *   *   when `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
+ *   *   when `function` checks if function passed the node is true.
+ * @returns
+ *   Check function that can be called as `check(node, index, parent)`.
+ */
 export const convert =
   /**
    * @type {(
-   *   (<ExplicitNode extends Node>(test: ExplicitNode['type']|Partial<ExplicitNode>|TestFunctionPredicate<ExplicitNode>) => AssertPredicate<ExplicitNode>) &
+   *   (<Kind extends Node>(test: Kind['type']|Partial<Kind>|TestFunctionPredicate<Kind>) => AssertPredicate<Kind>) &
    *   ((test?: Test) => AssertAnything)
    * )}
    */
   (
     /**
-     * Generate an assertion from a check.
      * @param {Test} [test]
-     * When nullish, checks if `node` is a `Node`.
-     * When `string`, works like passing `function (node) {return node.type === test}`.
-     * When `function` checks if function passed the node is true.
-     * When `object`, checks that all keys in test are in node, and that they have (strictly) equal values.
-     * When `array`, checks any one of the subtests pass.
      * @returns {AssertAnything}
      */
     function (test) {
@@ -162,6 +187,7 @@ export const convert =
       throw new Error('Expected function, string, or object as test')
     }
   )
+
 /**
  * @param {Array<Type|Props|TestFunctionAnything>} tests
  * @returns {AssertAnything}
@@ -194,8 +220,8 @@ function anyFactory(tests) {
 }
 
 /**
- * Utility to assert each property in `test` is represented in `node`, and each
- * values are strictly equal.
+ * Assert each field in `test` is present in `node` and each values are strictly
+ * equal.
  *
  * @param {Props} check
  * @returns {AssertAnything}
@@ -221,7 +247,7 @@ function propsFactory(check) {
 }
 
 /**
- * Utility to convert a string into a function which checks a given node’s type
+ * Convert a string into a function which checks a given node’s type
  * for said string.
  *
  * @param {Type} check
@@ -239,8 +265,9 @@ function typeFactory(check) {
 }
 
 /**
- * Utility to convert a string into a function which checks a given node’s type
+ * Convert a string into a function which checks a given node’s type
  * for said string.
+ *
  * @param {TestFunctionAnything} check
  * @returns {AssertAnything}
  */
@@ -258,7 +285,6 @@ function castFactory(check) {
   }
 }
 
-// Utility to return true.
 function ok() {
   return true
 }
