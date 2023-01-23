@@ -6,8 +6,15 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {is} from '../index.js'
+import * as mod from '../index.js'
 
 test('is', async (t) => {
+  assert.deepEqual(
+    Object.keys(mod).sort(),
+    ['convert', 'is'],
+    'should expose the public api'
+  )
+
   const node = {type: 'strong'}
   const parent = {type: 'paragraph', children: []}
 
