@@ -6,6 +6,11 @@
 
 /**
  * @template {import('unist').Node} Kind
+ * @typedef {import('./lib/index.js').PredicateTest<Kind>} PredicateTest
+ */
+
+/**
+ * @template {import('unist').Node} Kind
  * @typedef {import('./lib/index.js').TestFunctionPredicate<Kind>} TestFunctionPredicate
  */
 
