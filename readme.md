@@ -19,6 +19,12 @@
 *   [API](#api)
     *   [`is(node[, test[, index, parent[, context]]])`](#isnode-test-index-parent-context)
     *   [`convert(test)`](#converttest)
+    *   [`AssertAnything`](#assertanything)
+    *   [`AssertPredicate`](#assertpredicate)
+    *   [`Test`](#test)
+    *   [`TestFunctionAnything`](#testfunctionanything)
+    *   [`PredicateTest`](#predicatetest)
+    *   [`TestFunctionPredicate`](#testfunctionpredicate)
 *   [Examples](#examples)
     *   [Example of `convert`](#example-of-convert)
 *   [Types](#types)
@@ -45,7 +51,7 @@ to match against CSS selectors.
 ## Install
 
 This package is [ESM only][esm].
-In Node.js (version 12.20+, 14.14+, 16.0+, 18.0+), install with [npm][]:
+In Node.js (version 14.14+ and 16.0+), install with [npm][]:
 
 ```sh
 npm install unist-util-is
@@ -54,14 +60,14 @@ npm install unist-util-is
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {is} from "https://esm.sh/unist-util-is@5"
+import {is} from 'https://esm.sh/unist-util-is@5'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {is} from "https://esm.sh/unist-util-is@5?bundle"
+  import {is} from 'https://esm.sh/unist-util-is@5?bundle'
 </script>
 ```
 
@@ -94,62 +100,176 @@ function test(node, n) {
 
 ## API
 
-This package exports the identifiers `is` and `convert`.
+This package exports the identifiers [`convert`][convert] and [`is`][is].
 There is no default export.
 
 ### `is(node[, test[, index, parent[, context]]])`
 
-Check if `node` passes a test.
-When a `parent` node is given the `index` of node should also be given.
+Check if `node` is a `Node` and whether it passes the given test.
 
 ###### Parameters
 
-*   `node` ([`Node`][node]) — node to check
-*   `test` ([`Function`][test], `string`, `Object`, or `Array<Test>`, optional)
-    — check:
-    *   when nullish, checks if `node` is a [`Node`][node]
-    *   when `string`, works like passing `node => node.type === test`
-    *   when `array`, checks if any one of the subtests pass
-    *   when `object`, checks that all fields in `test` are in `node` and that
-        they have strictly equal values
-    *   when `function` checks if function passed the node is true
-*   `index` (`number`, optional) — position of `node` in `parent`.
-*   `parent` ([`Node`][node], optional) — parent of `node`
-*   `context` (`*`, optional) — context object to call `test` with
+*   `node` (`unknown`)
+    — thing to check, typically [`Node`][node]
+*   `test` ([`Test`][test] or [`PredicateTest`][predicatetest], optional)
+    — a check for a specific element
+*   `index` (`number`, optional)
+    — the node’s position in its parent
+*   `parent` ([`Node`][node], optional)
+    — the node’s parent
+*   `context` (`any`, optional)
+    — context object (`this`) to call `test` with
 
 ###### Returns
 
-Whether `test` passed *and* `node` is a [`Node`][node] (`boolean`).
+Whether `node` is a [`Node`][node] and passes a test (`boolean`).
 
-#### `test(node[, index, parent])`
+###### Throws
 
-Arbitrary function to define whether a node passes.
-
-###### Parameters
-
-*   `this` (`*`) — the to `is` given `context`.
-*   `node` ([`Node`][node]) — node to check
-*   `index` (`number?`) — [index][] of `node` in `parent`
-*   `parent` ([`Node?`][node]) — [parent][] of `node`
-
-###### Returns
-
-Whether `node` matches (`boolean?`).
+When an incorrect `test`, `index`, or `parent` is given.
+There is no error thrown when `node` is not a node.
 
 ### `convert(test)`
 
-Create a test function from `test` that can later be called with a `node`,
-`index`, and `parent`.
-Useful if you’re going to test many nodes, for example when creating a utility
-where something else passes an is-compatible test.
+Generate a check from a test.
 
-The created function is slightly faster that using `is` because it expects valid
-input only.
-Therefore, passing invalid input yields unexpected results.
+Useful if you’re going to test many nodes, for example when creating a
+utility where something else passes a compatible test.
+
+The created function is a bit faster because it expects valid input only:
+a `node`, `index`, and `parent`.
+
+###### Parameters
+
+*   `test` ([`Test`][test] or [`PredicateTest`][predicatetest], optional)
+    — a check for a specific node
 
 ###### Returns
 
-Check function that can be called as `check(node, index, parent)`.
+An assertion ([`AssertAnything`][assertanything] or
+[`AssertPredicate`][assertpredicate]).
+
+### `AssertAnything`
+
+Check that an arbitrary value is a node, unaware of TypeScript inferral
+(TypeScript type).
+
+###### Parameters
+
+*   `node` (`unknown`)
+    — anything (typically a node)
+*   `index` (`number`, optional)
+    — the node’s position in its parent
+*   `parent` ([`Node`][node], optional)
+    — the node’s parent
+
+###### Returns
+
+Whether this is a node and passes a test (`boolean`).
+
+### `AssertPredicate`
+
+Check that an arbitrary value is a specific node, aware of TypeScript
+(TypeScript type).
+
+###### Type parameters
+
+*   `Kind` ([`Node`][node])
+    — node type
+
+###### Parameters
+
+*   `node` (`unknown`)
+    — anything (typically a node)
+*   `index` (`number`, optional)
+    — the node’s position in its parent
+*   `parent` ([`Node`][node], optional)
+    — the node’s parent
+
+###### Returns
+
+Whether this is a node and passes a test (`node is Kind`).
+
+### `Test`
+
+Check for an arbitrary node, unaware of TypeScript inferral (TypeScript
+type).
+
+###### Type
+
+```ts
+type Test =
+  | null
+  | undefined
+  | string
+  | Record<string, unknown>
+  | TestFunctionAnything
+  | Array<string | Record<string, unknown> | TestFunctionAnything>
+```
+
+Checks that the given thing is a node, and then:
+
+*   when `string`, checks that the node has that tag name
+*   when `function`, see  [`TestFunctionAnything`][testfunctionanything]
+*   when `object`, checks that all keys in test are in node, and that they have
+    (strictly) equal values
+*   when `Array`, checks if one of the subtests pass
+
+### `TestFunctionAnything`
+
+Check if a node passes a test, unaware of TypeScript inferral (TypeScript
+type).
+
+###### Parameters
+
+*   `node` ([`Node`][node])
+    — a node
+*   `index` (`number`, optional)
+    — the node’s position in its parent
+*   `parent` ([`Node`][node], optional)
+    — the node’s parent
+
+###### Returns
+
+Whether this node passes the test (`boolean`).
+
+### `PredicateTest`
+
+Check for a node that can be inferred by TypeScript (TypeScript type).
+
+###### Type
+
+```ts
+type PredicateTest<Kind extends Node> =
+  | Kind['type']
+  | Partial<Kind>
+  | TestFunctionPredicate<Kind>
+  | Array<Kind['type'] | Partial<Kind> | TestFunctionPredicate<Kind>>
+```
+
+See [`TestFunctionPredicate`][testfunctionpredicate].
+
+### `TestFunctionPredicate`
+
+Check if a node passes a certain node test (TypeScript type).
+
+###### Type parameters
+
+*   `Kind` ([`Node`][node])
+    — node type
+
+###### Parameters
+
+*   `node` ([`Node`][node])
+    — a node
+*   `index` (`number`, optional)
+    — the node’s position in its parent
+*   `parent` ([`Node`][node], optional)
+    — the node’s parent
+
+###### Returns
+
+Whether this node passes the test (`node is Kind`).
 
 ## Examples
 
@@ -182,24 +302,17 @@ Yields:
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports the additional types:
-
-*   `Test`
-    — models any arbitrary test that can be given
-*   `TestFunctionAnything`
-    — models any test function
-*   `TestFunctionPredicate<Kind>` (where `Kind` extends `Node`)
-    — models a test function for `Kind`
-*   `AssertAnything`
-    — models a check function as returned by `convert`
-*   `AssertPredicate<Kind>` (where `Kind` extends `Node`)
-    — models a check function for `Kind` as returned by `convert`
+It exports the additional types [`AssertAnything`][assertanything],
+[`AssertPredicate`][assertpredicate], [`Test`][test],
+[`TestFunctionAnything`][testfunctionanything],
+[`TestFunctionPredicate`][testfunctionpredicate], and
+[`PredicateTest`][predicatetest].
 
 ## Compatibility
 
 Projects maintained by the unified collective are compatible with all maintained
 versions of Node.js.
-As of now, that is Node.js 12.20+, 14.14+, 16.0+, and 18.0+.
+As of now, that is Node.js 14.14+ and 16.0+.
 Our projects sometimes work with older versions, but this is not guaranteed.
 
 ## Related
@@ -285,12 +398,22 @@ abide by its terms.
 
 [node]: https://github.com/syntax-tree/unist#node
 
-[parent]: https://github.com/syntax-tree/unist#parent-1
-
-[index]: https://github.com/syntax-tree/unist#index
-
 [hast-util-is-element]: https://github.com/syntax-tree/hast-util-is-element
 
 [unist-util-select]: https://github.com/syntax-tree/unist-util-select
 
-[test]: #testnode-index-parent
+[is]: #isnode-test-index-parent-context
+
+[convert]: #converttest
+
+[assertanything]: #assertanything
+
+[assertpredicate]: #assertpredicate
+
+[test]: #test
+
+[testfunctionanything]: #testfunctionanything
+
+[testfunctionpredicate]: #testfunctionpredicate
+
+[predicatetest]: #predicatetest
