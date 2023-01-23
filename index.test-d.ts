@@ -1,15 +1,16 @@
-import {Node, Parent} from 'unist'
+import type {Node, Parent} from 'unist'
 import {
   expectType,
   expectAssignable,
   expectNotAssignable,
   expectError
 } from 'tsd'
-import {Heading} from 'mdast'
+import type {Heading} from 'mdast'
 import {unified} from 'unified'
 import {is, convert} from './index.js'
 
 /* Setup. */
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface Element extends Parent {
   type: 'element'
   tagName: string
@@ -18,6 +19,7 @@ interface Element extends Parent {
   children: Node[]
 }
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 interface Paragraph extends Parent {
   type: 'ParagraphNode'
 }
