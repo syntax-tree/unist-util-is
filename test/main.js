@@ -94,7 +94,7 @@ test('unist-util-is', (t) => {
   t.test('should accept a test', (t) => {
     /**
      * @param {unknown} _
-     * @param {number|null|undefined} n
+     * @param {number | null | undefined} n
      * @returns {boolean}
      */
     function test(_, n) {
@@ -116,8 +116,8 @@ test('unist-util-is', (t) => {
     /**
      * @this {context}
      * @param {Node} a
-     * @param {number|null|undefined} b
-     * @param {Parent|null|undefined} c
+     * @param {number | null | undefined} b
+     * @param {Parent | null | undefined} c
      */
     function test(a, b, c) {
       t.equal(this, context)
@@ -142,8 +142,8 @@ test('unist-util-is', (t) => {
     /**
      * @this {context}
      * @param {Node} a
-     * @param {number|null|undefined} b
-     * @param {Parent|null|undefined} c
+     * @param {number | null | undefined} b
+     * @param {Parent | null | undefined} c
      * @returns {boolean}
      */
     function test(a, b, c) {

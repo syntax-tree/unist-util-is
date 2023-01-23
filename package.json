@@ -75,7 +75,7 @@
   },
   "remarkConfig": {
     "plugins": [
-      "preset-wooorm"
+      "remark-preset-wooorm"
     ]
   },
   "typeCoverage": {

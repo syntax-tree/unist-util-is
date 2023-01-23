@@ -64,8 +64,11 @@ expectType<boolean>(is(heading))
 expectType<boolean>(is(heading, null))
 expectType<boolean>(is(heading, undefined))
 /* But not with a type predicate */
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments
 expectError(is<Node>(heading)) // But not with a type predicate
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments
 expectError(is<Node>(heading, null))
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments
 expectError(is<Node>(heading, undefined))
 
 /* Should support string tests. */
