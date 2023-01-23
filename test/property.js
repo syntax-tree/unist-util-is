@@ -1,17 +1,13 @@
-/**
- * @typedef {import('unist').Node} Node
- */
-
-import test from 'tape'
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import fc from 'fast-check'
 import lodash from 'lodash'
 import {is} from '../index.js'
 
 const {isObject, isPlainObject, pick, cloneDeep} = lodash
 
-test('unist-util-is properties', (t) => {
-  t.plan(4)
-  t.doesNotThrow(
+test('properties', () => {
+  assert.doesNotThrow(
     () =>
       fc.assert(
         // @ts-expect-error: fine.
@@ -22,7 +18,7 @@ test('unist-util-is properties', (t) => {
     'should see any object w/ a non-empty `type` as a node'
   )
 
-  t.doesNotThrow(
+  assert.doesNotThrow(
     () =>
       fc.assert(
         fc.property(
@@ -37,7 +33,7 @@ test('unist-util-is properties', (t) => {
     'should see any object w/o a `type` as a non-node'
   )
 
-  t.doesNotThrow(
+  assert.doesNotThrow(
     () =>
       fc.assert(
         // @ts-expect-error: fine.
@@ -48,7 +44,7 @@ test('unist-util-is properties', (t) => {
     'should match types'
   )
 
-  t.doesNotThrow(
+  assert.doesNotThrow(
     () =>
       fc.assert(
         fc.property(

@@ -3,14 +3,15 @@
  * @typedef {import('unist').Parent} Parent
  */
 
-import test from 'tape'
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import {is} from '../index.js'
 
-test('unist-util-is', (t) => {
+test('is', async (t) => {
   const node = {type: 'strong'}
   const parent = {type: 'paragraph', children: []}
 
-  t.throws(
+  assert.throws(
     () => {
       // @ts-expect-error runtime.
       is(null, false)
@@ -19,7 +20,7 @@ test('unist-util-is', (t) => {
     'should throw when `test` is invalid'
   )
 
-  t.throws(
+  assert.throws(
     () => {
       is(node, null, -1, parent)
     },
@@ -27,7 +28,7 @@ test('unist-util-is', (t) => {
     'should throw when `index` is invalid (#1)'
   )
 
-  t.throws(
+  assert.throws(
     () => {
       is(node, null, Number.POSITIVE_INFINITY, parent)
     },
@@ -35,7 +36,7 @@ test('unist-util-is', (t) => {
     'should throw when `index` is invalid (#2)'
   )
 
-  t.throws(
+  assert.throws(
     () => {
       // @ts-expect-error runtime.
       is(node, null, false, parent)
@@ -44,7 +45,7 @@ test('unist-util-is', (t) => {
     'should throw when `index` is invalid (#3)'
   )
 
-  t.throws(
+  assert.throws(
     () => {
       // @ts-expect-error runtime.
       is(node, null, 0, {})
@@ -53,7 +54,7 @@ test('unist-util-is', (t) => {
     'should throw when `parent` is invalid (#1)'
   )
 
-  t.throws(
+  assert.throws(
     () => {
       // @ts-expect-error runtime.
       is(node, null, 0, {type: 'paragraph'})
@@ -62,7 +63,7 @@ test('unist-util-is', (t) => {
     'should throw when `parent` is invalid (#2)'
   )
 
-  t.throws(
+  assert.throws(
     () => {
       // @ts-expect-error: both `index` and `parent` are needed.
       is(node, null, 0)
@@ -71,7 +72,7 @@ test('unist-util-is', (t) => {
     'should throw `parent` xor `index` are given (#1)'
   )
 
-  t.throws(
+  assert.throws(
     () => {
       // @ts-expect-error: both `index` and `parent` are needed.
       is(node, null, null, parent)
@@ -79,19 +80,23 @@ test('unist-util-is', (t) => {
     /Expected both parent and index/,
     'should throw `parent` xor `index` are given (#2)'
   )
-  t.notok(is(), 'should not fail without node')
-  t.ok(is(node), 'should check if given a node (#1)')
-  t.notok(is({children: []}, null), 'should check if given a node (#2)')
+  assert.ok(!is(), 'should not fail without node')
+  assert.ok(is(node), 'should check if given a node (#1)')
+  assert.ok(!is({children: []}, null), 'should check if given a node (#2)')
 
-  t.ok(is(node, 'strong'), 'should match types (#1)')
-  t.notok(is(node, 'emphasis'), 'should match types (#2)')
+  assert.ok(is(node, 'strong'), 'should match types (#1)')
+  assert.ok(!is(node, 'emphasis'), 'should match types (#2)')
 
-  t.ok(is(node, node), 'should match partially (#1)')
-  t.ok(is(node, {type: 'strong'}), 'should match partially (#2)')
-  t.ok(is(parent, {type: 'paragraph'}), 'should match partially (#3)')
-  t.notok(is(node, {type: 'paragraph'}), 'should match partially (#4)')
+  assert.ok(is(node, node), 'should match partially (#1)')
+  assert.ok(is(node, {type: 'strong'}), 'should match partially (#2)')
+  assert.ok(is(parent, {type: 'paragraph'}), 'should match partially (#3)')
+  assert.ok(!is(node, {type: 'paragraph'}), 'should match partially (#4)')
 
-  t.test('should accept a test', (t) => {
+  await t.test('should accept a test', () => {
+    assert.ok(!is(node, test))
+    assert.ok(!is(node, test, 0, parent))
+    assert.ok(is(node, test, 5, parent))
+
     /**
      * @param {unknown} _
      * @param {number | null | undefined} n
@@ -100,18 +105,14 @@ test('unist-util-is', (t) => {
     function test(_, n) {
       return n === 5
     }
-
-    t.notok(is(node, test))
-    t.notok(is(node, test, 0, parent))
-    t.ok(is(node, test, 5, parent))
-
-    t.end()
   })
 
-  t.test('should call test', (t) => {
+  await t.test('should call test', () => {
     const context = {foo: 'bar'}
+    let calls = 0
 
-    t.plan(4)
+    is(node, test, 5, parent, context)
+    assert.equal(calls, 1)
 
     /**
      * @this {context}
@@ -120,24 +121,23 @@ test('unist-util-is', (t) => {
      * @param {Parent | null | undefined} c
      */
     function test(a, b, c) {
-      t.equal(this, context)
-      t.equal(a, node)
-      t.equal(b, 5)
-      t.equal(c, parent)
+      assert.equal(this, context)
+      assert.equal(a, node)
+      assert.equal(b, 5)
+      assert.equal(c, parent)
+      calls++
     }
-
-    is(node, test, 5, parent, context)
   })
 
-  t.ok(is(node, ['strong', 'emphasis']), 'should match arrays (#1)')
-  t.notok(is(node, ['b', 'i']), 'should match arrays (#2)')
+  assert.ok(is(node, ['strong', 'emphasis']), 'should match arrays (#1)')
+  assert.ok(!is(node, ['b', 'i']), 'should match arrays (#2)')
 
-  t.test('should match arrays (#3)', (t) => {
+  await t.test('should match arrays (#3)', () => {
     const context = {foo: 'bar'}
+    let calls = 0
 
-    t.plan(5)
-
-    t.ok(is(node, [test, 'strong'], 5, parent, context))
+    assert.ok(is(node, [test, 'strong'], 5, parent, context))
+    assert.equal(calls, 1)
 
     /**
      * @this {context}
@@ -147,13 +147,12 @@ test('unist-util-is', (t) => {
      * @returns {boolean}
      */
     function test(a, b, c) {
-      t.equal(this, context)
-      t.equal(a, node)
-      t.equal(b, 5)
-      t.equal(c, parent)
+      assert.equal(this, context)
+      assert.equal(a, node)
+      assert.equal(b, 5)
+      assert.equal(c, parent)
+      calls++
       return false
     }
   })
-
-  t.end()
 })
