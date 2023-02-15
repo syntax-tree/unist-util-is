@@ -37,6 +37,9 @@
     "index.d.ts",
     "index.js"
   ],
+  "dependencies": {
+    "@types/unist": "^2.0.0"
+  },
   "devDependencies": {
     "@types/lodash": "^4.0.0",
     "@types/mdast": "^3.0.0",
