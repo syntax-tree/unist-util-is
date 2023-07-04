@@ -122,7 +122,7 @@ test('is', async (t) => {
     assert.equal(calls, 1)
 
     /**
-     * @this {context}
+     * @this {unknown}
      * @param {Node} a
      * @param {number | null | undefined} b
      * @param {Parent | null | undefined} c
@@ -147,7 +147,7 @@ test('is', async (t) => {
     assert.equal(calls, 1)
 
     /**
-     * @this {context}
+     * @this {unknown}
      * @param {Node} a
      * @param {number | null | undefined} b
      * @param {Parent | null | undefined} c
