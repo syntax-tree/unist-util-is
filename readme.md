@@ -19,12 +19,9 @@
 *   [API](#api)
     *   [`is(node[, test[, index, parent[, context]]])`](#isnode-test-index-parent-context)
     *   [`convert(test)`](#converttest)
-    *   [`AssertAnything`](#assertanything)
-    *   [`AssertPredicate`](#assertpredicate)
+    *   [`Check`](#check)
     *   [`Test`](#test)
-    *   [`TestFunctionAnything`](#testfunctionanything)
-    *   [`PredicateTest`](#predicatetest)
-    *   [`TestFunctionPredicate`](#testfunctionpredicate)
+    *   [`TestFunction`](#testfunction)
 *   [Examples](#examples)
     *   [Example of `convert`](#example-of-convert)
 *   [Types](#types)
@@ -100,7 +97,8 @@ function test(node, n) {
 
 ## API
 
-This package exports the identifiers [`convert`][convert] and [`is`][is].
+This package exports the identifiers [`convert`][api-convert] and
+[`is`][api-is].
 There is no default export.
 
 ### `is(node[, test[, index, parent[, context]]])`
@@ -109,15 +107,15 @@ Check if `node` is a `Node` and whether it passes the given test.
 
 ###### Parameters
 
-*   `node` (`unknown`)
+*   `node` (`unknown`, optional)
     — thing to check, typically [`Node`][node]
-*   `test` ([`Test`][test] or [`PredicateTest`][predicatetest], optional)
-    — a check for a specific element
+*   `test` ([`Test`][api-test], optional)
+    — a test for a specific element
 *   `index` (`number`, optional)
     — the node’s position in its parent
 *   `parent` ([`Node`][node], optional)
     — the node’s parent
-*   `context` (`any`, optional)
+*   `context` (`unknown`, optional)
     — context object (`this`) to call `test` with
 
 ###### Returns
@@ -141,21 +139,21 @@ a `node`, `index`, and `parent`.
 
 ###### Parameters
 
-*   `test` ([`Test`][test] or [`PredicateTest`][predicatetest], optional)
-    — a check for a specific node
+*   `test` ([`Test`][api-test], optional)
+    — a test for a specific node
 
 ###### Returns
 
-An assertion ([`AssertAnything`][assertanything] or
-[`AssertPredicate`][assertpredicate]).
+A check ([`Check`][api-check]).
 
-### `AssertAnything`
+### `Check`
 
-Check that an arbitrary value is a node, unaware of TypeScript inferral
-(TypeScript type).
+Check that an arbitrary value is a node (TypeScript type).
 
 ###### Parameters
 
+*   `this` (`unknown`, optional)
+    — context object (`this`) to call `test` with
 *   `node` (`unknown`)
     — anything (typically a node)
 *   `index` (`number`, optional)
@@ -167,109 +165,46 @@ Check that an arbitrary value is a node, unaware of TypeScript inferral
 
 Whether this is a node and passes a test (`boolean`).
 
-### `AssertPredicate`
-
-Check that an arbitrary value is a specific node, aware of TypeScript
-(TypeScript type).
-
-###### Type parameters
-
-*   `Kind` ([`Node`][node])
-    — node type
-
-###### Parameters
-
-*   `node` (`unknown`)
-    — anything (typically a node)
-*   `index` (`number`, optional)
-    — the node’s position in its parent
-*   `parent` ([`Node`][node], optional)
-    — the node’s parent
-
-###### Returns
-
-Whether this is a node and passes a test (`node is Kind`).
-
 ### `Test`
 
-Check for an arbitrary node, unaware of TypeScript inferral (TypeScript
-type).
+Check for an arbitrary node (TypeScript type).
 
 ###### Type
 
 ```ts
 type Test =
+  | Array<Record<string, unknown> | TestFunction | string>
+  | Record<string, unknown>
+  | TestFunction
+  | string
   | null
   | undefined
-  | string
-  | Record<string, unknown>
-  | TestFunctionAnything
-  | Array<string | Record<string, unknown> | TestFunctionAnything>
 ```
 
 Checks that the given thing is a node, and then:
 
 *   when `string`, checks that the node has that tag name
-*   when `function`, see  [`TestFunctionAnything`][testfunctionanything]
+*   when `function`, see  [`TestFunction`][api-test-function]
 *   when `object`, checks that all keys in test are in node, and that they have
     (strictly) equal values
 *   when `Array`, checks if one of the subtests pass
 
-### `TestFunctionAnything`
+### `TestFunction`
 
-Check if a node passes a test, unaware of TypeScript inferral (TypeScript
-type).
-
-###### Parameters
-
-*   `node` ([`Node`][node])
-    — a node
-*   `index` (`number`, optional)
-    — the node’s position in its parent
-*   `parent` ([`Node`][node], optional)
-    — the node’s parent
-
-###### Returns
-
-Whether this node passes the test (`boolean`).
-
-### `PredicateTest`
-
-Check for a node that can be inferred by TypeScript (TypeScript type).
-
-###### Type
-
-```ts
-type PredicateTest<Kind extends Node> =
-  | Kind['type']
-  | Partial<Kind>
-  | TestFunctionPredicate<Kind>
-  | Array<Kind['type'] | Partial<Kind> | TestFunctionPredicate<Kind>>
-```
-
-See [`TestFunctionPredicate`][testfunctionpredicate].
-
-### `TestFunctionPredicate`
-
-Check if a node passes a certain node test (TypeScript type).
-
-###### Type parameters
-
-*   `Kind` ([`Node`][node])
-    — node type
+Check if a node passes a test (TypeScript type).
 
 ###### Parameters
 
 *   `node` ([`Node`][node])
     — a node
-*   `index` (`number`, optional)
+*   `index` (`number` or `undefined`)
     — the node’s position in its parent
-*   `parent` ([`Node`][node], optional)
+*   `parent` ([`Node`][node] or `undefined`)
     — the node’s parent
 
 ###### Returns
 
-Whether this node passes the test (`node is Kind`).
+Whether this node passes the test (`boolean`, optional).
 
 ## Examples
 
@@ -288,7 +223,9 @@ const tree = u('tree', [
   u('leaf', '5')
 ])
 
-const leafs = tree.children.filter((child, index) => test(child, index, tree))
+const leafs = tree.children.filter(function (child, index) {
+  return test(child, index, tree)
+})
 
 console.log(leafs)
 ```
@@ -302,11 +239,9 @@ Yields:
 ## Types
 
 This package is fully typed with [TypeScript][].
-It exports the additional types [`AssertAnything`][assertanything],
-[`AssertPredicate`][assertpredicate], [`Test`][test],
-[`TestFunctionAnything`][testfunctionanything],
-[`TestFunctionPredicate`][testfunctionpredicate], and
-[`PredicateTest`][predicatetest].
+It exports the additional types [`Check`][api-check],
+[`Test`][api-test],
+[`TestFunction`][api-test-function].
 
 ## Compatibility
 
@@ -402,18 +337,12 @@ abide by its terms.
 
 [unist-util-select]: https://github.com/syntax-tree/unist-util-select
 
-[is]: #isnode-test-index-parent-context
+[api-convert]: #converttest
 
-[convert]: #converttest
+[api-is]: #isnode-test-index-parent-context
 
-[assertanything]: #assertanything
+[api-check]: #check
 
-[assertpredicate]: #assertpredicate
+[api-test]: #test
 
-[test]: #test
-
-[testfunctionanything]: #testfunctionanything
-
-[testfunctionpredicate]: #testfunctionpredicate
-
-[predicatetest]: #predicatetest
+[api-test-function]: #testfunction
