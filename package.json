@@ -30,8 +30,7 @@
   ],
   "sideEffects": false,
   "type": "module",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "exports": "./index.js",
   "files": [
     "lib/",
     "index.d.ts",
@@ -91,7 +90,8 @@
         ],
         "rules": {
           "@typescript-eslint/consistent-type-definitions": "off",
-          "@typescript-eslint/no-unnecessary-type-arguments": "off"
+          "@typescript-eslint/no-unnecessary-type-arguments": "off",
+          "import/no-extraneous-dependencies": "off"
         }
       }
     ],

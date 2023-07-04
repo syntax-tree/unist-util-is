@@ -1,7 +1,7 @@
 import type {Content, Heading, Paragraph, Root} from 'mdast'
 import {expectAssignable, expectNotType, expectType} from 'tsd'
 import type {Node, Parent} from 'unist'
-import {convert, is} from './index.js'
+import {convert, is} from 'unist-util-is'
 
 // # Setup
 
