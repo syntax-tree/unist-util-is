@@ -57,14 +57,14 @@ npm install unist-util-is
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {is} from 'https://esm.sh/unist-util-is@5'
+import {is} from 'https://esm.sh/unist-util-is@6'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {is} from 'https://esm.sh/unist-util-is@5?bundle'
+  import {is} from 'https://esm.sh/unist-util-is@6?bundle'
 </script>
 ```
 
