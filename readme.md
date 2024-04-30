@@ -12,23 +12,23 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When should I use this?](#when-should-i-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`is(node[, test[, index, parent[, context]]])`](#isnode-test-index-parent-context)
-    *   [`convert(test)`](#converttest)
-    *   [`Check`](#check)
-    *   [`Test`](#test)
-    *   [`TestFunction`](#testfunction)
-*   [Examples](#examples)
-    *   [Example of `convert`](#example-of-convert)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Related](#related)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When should I use this?](#when-should-i-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`is(node[, test[, index, parent[, context]]])`](#isnode-test-index-parent-context)
+  * [`convert(test)`](#converttest)
+  * [`Check`](#check)
+  * [`Test`](#test)
+  * [`TestFunction`](#testfunction)
+* [Examples](#examples)
+  * [Example of `convert`](#example-of-convert)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Related](#related)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -107,16 +107,16 @@ Check if `node` is a `Node` and whether it passes the given test.
 
 ###### Parameters
 
-*   `node` (`unknown`, optional)
-    — thing to check, typically [`Node`][node]
-*   `test` ([`Test`][api-test], optional)
-    — a test for a specific element
-*   `index` (`number`, optional)
-    — the node’s position in its parent
-*   `parent` ([`Node`][node], optional)
-    — the node’s parent
-*   `context` (`unknown`, optional)
-    — context object (`this`) to call `test` with
+* `node` (`unknown`, optional)
+  — thing to check, typically [`Node`][node]
+* `test` ([`Test`][api-test], optional)
+  — a test for a specific element
+* `index` (`number`, optional)
+  — the node’s position in its parent
+* `parent` ([`Node`][node], optional)
+  — the node’s parent
+* `context` (`unknown`, optional)
+  — context object (`this`) to call `test` with
 
 ###### Returns
 
@@ -139,8 +139,8 @@ a `node`, `index`, and `parent`.
 
 ###### Parameters
 
-*   `test` ([`Test`][api-test], optional)
-    — a test for a specific node
+* `test` ([`Test`][api-test], optional)
+  — a test for a specific node
 
 ###### Returns
 
@@ -152,14 +152,14 @@ Check that an arbitrary value is a node (TypeScript type).
 
 ###### Parameters
 
-*   `this` (`unknown`, optional)
-    — context object (`this`) to call `test` with
-*   `node` (`unknown`)
-    — anything (typically a node)
-*   `index` (`number`, optional)
-    — the node’s position in its parent
-*   `parent` ([`Node`][node], optional)
-    — the node’s parent
+* `this` (`unknown`, optional)
+  — context object (`this`) to call `test` with
+* `node` (`unknown`)
+  — anything (typically a node)
+* `index` (`number`, optional)
+  — the node’s position in its parent
+* `parent` ([`Node`][node], optional)
+  — the node’s parent
 
 ###### Returns
 
@@ -183,11 +183,11 @@ type Test =
 
 Checks that the given thing is a node, and then:
 
-*   when `string`, checks that the node has that tag name
-*   when `function`, see  [`TestFunction`][api-test-function]
-*   when `object`, checks that all keys in test are in node, and that they have
-    (strictly) equal values
-*   when `Array`, checks if one of the subtests pass
+* when `string`, checks that the node has that tag name
+* when `function`, see  [`TestFunction`][api-test-function]
+* when `object`, checks that all keys in test are in node, and that they have
+  (strictly) equal values
+* when `Array`, checks if one of the subtests pass
 
 ### `TestFunction`
 
@@ -195,12 +195,12 @@ Check if a node passes a test (TypeScript type).
 
 ###### Parameters
 
-*   `node` ([`Node`][node])
-    — a node
-*   `index` (`number` or `undefined`)
-    — the node’s position in its parent
-*   `parent` ([`Node`][node] or `undefined`)
-    — the node’s parent
+* `node` ([`Node`][node])
+  — a node
+* `index` (`number` or `undefined`)
+  — the node’s position in its parent
+* `parent` ([`Node`][node] or `undefined`)
+  — the node’s parent
 
 ###### Returns
 
@@ -255,20 +255,20 @@ compatible with Node.js 16.
 
 ## Related
 
-*   [`unist-util-find-after`](https://github.com/syntax-tree/unist-util-find-after)
-    — find a node after another node
-*   [`unist-util-find-before`](https://github.com/syntax-tree/unist-util-find-before)
-    — find a node before another node
-*   [`unist-util-find-all-after`](https://github.com/syntax-tree/unist-util-find-all-after)
-    — find all nodes after another node
-*   [`unist-util-find-all-before`](https://github.com/syntax-tree/unist-util-find-all-before)
-    — find all nodes before another node
-*   [`unist-util-find-all-between`](https://github.com/mrzmmr/unist-util-find-all-between)
-    — find all nodes between two nodes
-*   [`unist-util-filter`](https://github.com/syntax-tree/unist-util-filter)
-    — create a new tree with nodes that pass a check
-*   [`unist-util-remove`](https://github.com/syntax-tree/unist-util-remove)
-    — remove nodes from tree
+* [`unist-util-find-after`](https://github.com/syntax-tree/unist-util-find-after)
+  — find a node after another node
+* [`unist-util-find-before`](https://github.com/syntax-tree/unist-util-find-before)
+  — find a node before another node
+* [`unist-util-find-all-after`](https://github.com/syntax-tree/unist-util-find-all-after)
+  — find all nodes after another node
+* [`unist-util-find-all-before`](https://github.com/syntax-tree/unist-util-find-all-before)
+  — find all nodes before another node
+* [`unist-util-find-all-between`](https://github.com/mrzmmr/unist-util-find-all-between)
+  — find all nodes between two nodes
+* [`unist-util-filter`](https://github.com/syntax-tree/unist-util-filter)
+  — create a new tree with nodes that pass a check
+* [`unist-util-remove`](https://github.com/syntax-tree/unist-util-remove)
+  — remove nodes from tree
 
 ## Contribute
 

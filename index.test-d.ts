@@ -150,72 +150,72 @@ if (is(mdastNode, {type: 'heading', depth: 2})) {
 }
 
 // TS makes this `type: string`.
-const checkParagraphProps = convert({type: 'paragraph'})
-const checkParagraphPropsConst = convert({type: 'paragraph'} as const)
-const checkHeading2Props = convert({type: 'heading', depth: 2})
-const checkHeading2PropsConst = convert({
+const checkParagraphProperties = convert({type: 'paragraph'})
+const checkParagraphPropertiesConst = convert({type: 'paragraph'} as const)
+const checkHeading2Properties = convert({type: 'heading', depth: 2})
+const checkHeading2PropertiesConst = convert({
   type: 'heading',
   depth: 2
 } as const)
 
-if (checkParagraphProps(mdastNode)) {
+if (checkParagraphProperties(mdastNode)) {
   expectNotType<Paragraph>(mdastNode)
 }
 
-if (checkParagraphPropsConst(mdastNode)) {
+if (checkParagraphPropertiesConst(mdastNode)) {
   expectType<Paragraph>(mdastNode)
 }
 
-if (checkHeading2Props(mdastNode)) {
+if (checkHeading2Properties(mdastNode)) {
   expectType<Heading>(mdastNode)
   expectNotType<2>(mdastNode.depth) // TS can’t narrow this normally.
 }
 
-if (checkHeading2PropsConst(mdastNode)) {
+if (checkHeading2PropertiesConst(mdastNode)) {
   expectAssignable<Heading>(mdastNode)
   expectType<2>(mdastNode.depth)
 }
 
 // Function test (with explicit assertion).
-const checkHeadingFn = convert(isHeading)
-const checkParagraphFn = convert(isParagraph)
-const checkHeading2Fn = convert(isHeading2)
+const checkHeadingFunction = convert(isHeading)
+const checkParagraphFunction = convert(isParagraph)
+const checkHeading2Function = convert(isHeading2)
 
-expectType<boolean>(checkHeadingFn(mdastNode))
+expectType<boolean>(checkHeadingFunction(mdastNode))
 
-if (checkHeadingFn(mdastNode)) {
+if (checkHeadingFunction(mdastNode)) {
   expectType<Heading>(mdastNode)
 }
 
-if (checkParagraphFn(mdastNode)) {
+if (checkParagraphFunction(mdastNode)) {
   expectType<Paragraph>(mdastNode)
 }
 
-if (checkParagraphFn(mdastNode)) {
+if (checkParagraphFunction(mdastNode)) {
   expectNotType<Heading>(mdastNode)
 }
 
-if (checkHeading2Fn(mdastNode)) {
+if (checkHeading2Function(mdastNode)) {
   expectAssignable<Heading>(mdastNode)
   expectType<2>(mdastNode.depth)
 }
 
 // Function test (implicit assertion).
-const checkHeadingLooseFn = convert(isHeadingLoose)
-const checkParagraphLooseFn = convert(isParagraphLoose)
-const checkHeadFn = convert(isHead)
+const checkHeadingLooseFunction = convert(isHeadingLoose)
+const checkParagraphLooseFunction = convert(isParagraphLoose)
+const checkHeadFunction = convert(isHead)
 
-expectType<boolean>(checkHeadingLooseFn(mdastNode))
+expectType<boolean>(checkHeadingLooseFunction(mdastNode))
 
-if (checkHeadingLooseFn(mdastNode)) {
+if (checkHeadingLooseFunction(mdastNode)) {
   expectNotType<Heading>(mdastNode)
 }
 
-if (checkParagraphLooseFn(mdastNode)) {
+if (checkParagraphLooseFunction(mdastNode)) {
   expectNotType<Heading>(mdastNode)
 }
 
-if (checkHeadFn(mdastNode)) {
+if (checkHeadFunction(mdastNode)) {
   expectNotType<Heading>(mdastNode)
 }
 
