@@ -1,6 +1,6 @@
 {
   "name": "unist-util-is",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "unist utility to check if a node passes a test",
   "license": "MIT",
   "keywords": [
