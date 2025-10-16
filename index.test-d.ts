@@ -1,11 +1,11 @@
-import type {Content, Heading, Paragraph, Root} from 'mdast'
+import type {Heading, Paragraph, RootContent, Root} from 'mdast'
 import {expectAssignable, expectNotType, expectType} from 'tsd'
 import type {Node, Parent} from 'unist'
 import {convert, is} from 'unist-util-is'
 
 // # Setup
 
-const mdastNode = (function (): Root | Content {
+const mdastNode = (function (): Root | RootContent {
   return {type: 'paragraph', children: []}
 })()
 
@@ -49,6 +49,7 @@ if (is(mdastNode, {type: 'heading', depth: 2})) {
 // TS makes this `type: string`.
 if (is(mdastNode, {type: 'paragraph'})) {
   expectNotType<Heading>(mdastNode)
+  expectNotType<Paragraph>(mdastNode)
 }
 
 if (is(mdastNode, {type: 'paragraph'} as const)) {
@@ -109,6 +110,18 @@ expectType<boolean>(
 // Can’t narrow down.
 if (is(mdastNode, ['heading', isHeading, isHeadingLoose, {type: 'heading'}])) {
   expectNotType<Heading>(mdastNode)
+}
+
+// Can’t narrow down.
+if (is(mdastNode, ['heading'])) {
+  expectNotType<Heading>(mdastNode)
+  expectNotType<Paragraph>(mdastNode)
+}
+
+// Can narrow down with `as const` on arrays of strings.
+if (is(mdastNode, ['heading'] as const)) {
+  expectType<Heading>(mdastNode)
+  expectNotType<Paragraph>(mdastNode)
 }
 
 // # `check`
