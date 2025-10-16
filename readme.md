@@ -286,66 +286,66 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/syntax-tree/unist-util-is/workflows/main/badge.svg
-
-[build]: https://github.com/syntax-tree/unist-util-is/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/syntax-tree/unist-util-is.svg
-
-[coverage]: https://codecov.io/github/syntax-tree/unist-util-is
-
-[downloads-badge]: https://img.shields.io/npm/dm/unist-util-is.svg
-
-[downloads]: https://www.npmjs.com/package/unist-util-is
-
-[size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=unist-util-is
-
-[size]: https://bundlejs.com/?q=unist-util-is
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[collective]: https://opencollective.com/unified
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/syntax-tree/unist/discussions
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
-
-[esmsh]: https://esm.sh
-
-[typescript]: https://www.typescriptlang.org
-
-[license]: license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/syntax-tree/.github
-
-[contributing]: https://github.com/syntax-tree/.github/blob/main/contributing.md
-
-[support]: https://github.com/syntax-tree/.github/blob/main/support.md
-
-[coc]: https://github.com/syntax-tree/.github/blob/main/code-of-conduct.md
-
-[unist]: https://github.com/syntax-tree/unist
-
-[node]: https://github.com/syntax-tree/unist#node
-
-[hast-util-is-element]: https://github.com/syntax-tree/hast-util-is-element
-
-[unist-util-select]: https://github.com/syntax-tree/unist-util-select
+[api-check]: #check
 
 [api-convert]: #converttest
 
 [api-is]: #isnode-test-index-parent-context
 
-[api-check]: #check
-
 [api-test]: #test
 
 [api-test-function]: #testfunction
+
+[author]: https://wooorm.com
+
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[build]: https://github.com/syntax-tree/unist-util-is/actions
+
+[build-badge]: https://github.com/syntax-tree/unist-util-is/workflows/main/badge.svg
+
+[chat]: https://github.com/syntax-tree/unist/discussions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[coc]: https://github.com/syntax-tree/.github/blob/main/code-of-conduct.md
+
+[collective]: https://opencollective.com/unified
+
+[contributing]: https://github.com/syntax-tree/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/syntax-tree/unist-util-is
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/syntax-tree/unist-util-is.svg
+
+[downloads]: https://www.npmjs.com/package/unist-util-is
+
+[downloads-badge]: https://img.shields.io/npm/dm/unist-util-is.svg
+
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
+
+[hast-util-is-element]: https://github.com/syntax-tree/hast-util-is-element
+
+[health]: https://github.com/syntax-tree/.github
+
+[license]: license
+
+[node]: https://github.com/syntax-tree/unist#node
+
+[npm]: https://docs.npmjs.com/cli/install
+
+[size]: https://bundlejs.com/?q=unist-util-is
+
+[size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=unist-util-is
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[support]: https://github.com/syntax-tree/.github/blob/main/support.md
+
+[typescript]: https://www.typescriptlang.org
+
+[unist]: https://github.com/syntax-tree/unist
+
+[unist-util-select]: https://github.com/syntax-tree/unist-util-select
